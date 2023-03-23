@@ -1,0 +1,33 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+
+	margin-bottom: 100px;
+	padding: 0 $mainPadding;
+}
+
+.productList {
+	display: flex;
+	gap: 10px;
+
+	height: 77px;
+
+	margin-bottom: 40px;
+
+	> li {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		background-color: #fff;
+		box-shadow: 0 0 5px rgba($color: #000000, $alpha: 0.1);
+
+		cursor: pointer;
+
+		min-width: 102px;
+	}
+}
+
+.switcherWrapper {
+	align-self: center;
+}

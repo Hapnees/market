@@ -1,0 +1,43 @@
+.wrapper {
+	font-weight: 400;
+	font-size: 12px;
+
+	display: flex;
+	gap: 10px;
+
+	margin-bottom: 35px;
+
+	> div {
+		display: flex;
+		align-items: center;
+		text-align: center;
+
+		box-shadow: 0px 15px 70px -11px rgba(43, 28, 1, 0.04);
+		border-radius: 10px;
+
+		cursor: pointer;
+		transition: box-shadow 0.3s;
+
+		height: 77px;
+		padding: 30px;
+
+		&:hover {
+			box-shadow: 0px 15px 70px -11px rgba(43, 28, 1, 0.2);
+		}
+
+		> p {
+			max-width: 245px;
+		}
+	}
+}
+
+.price {
+	font-weight: 700;
+}
+
+.priceListBtn {
+	gap: 13px;
+
+	font-weight: 700;
+	font-size: 14px;
+}

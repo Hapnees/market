@@ -1,0 +1,22 @@
+.nav {
+	font-weight: 300;
+	font-size: 14px;
+
+	margin-bottom: 65px;
+
+	> a {
+		border-right: 1px dashed rgba($color: $grayBlue, $alpha: 0.3);
+
+		padding: 0 10px;
+
+		&:first-child {
+			padding-left: 0;
+		}
+
+		&:last-child {
+			opacity: 0.5;
+			border-right: none;
+			padding-right: 0;
+		}
+	}
+}

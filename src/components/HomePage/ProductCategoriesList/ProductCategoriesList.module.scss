@@ -1,0 +1,44 @@
+.categoryList {
+	display: flex;
+	gap: 30px;
+
+	margin-bottom: 100px;
+
+	> li {
+		transition: transform 0.3s;
+		cursor: pointer;
+
+		&:hover {
+			transform: scale(1.05);
+		}
+
+		&:hover .imgWrapper {
+			background-color: #eae5e0;
+		}
+	}
+}
+
+.imgWrapper {
+	background-color: #f9f6f2af;
+	width: 250px;
+	height: 250px;
+	border-radius: 20px;
+
+	display: flex;
+	align-items: flex-end;
+
+	transition: background 0.3s;
+
+	margin-bottom: 20px;
+
+	> img {
+		border-radius: 20px;
+	}
+}
+
+.categoryTitle {
+	text-align: center;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 130%;
+}

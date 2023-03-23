@@ -1,0 +1,33 @@
+.priceController {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	margin-bottom: 30px;
+
+	> p {
+		color: $grayBlue;
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 130%;
+	}
+}
+
+.price {
+	margin-bottom: 16px;
+
+	> span {
+		line-height: 150%;
+		font-size: 14px;
+
+		&:first-child {
+			color: $grayBlue;
+			font-weight: 300;
+			margin-right: 5px;
+		}
+
+		&:last-child {
+			font-weight: 500;
+		}
+	}
+}

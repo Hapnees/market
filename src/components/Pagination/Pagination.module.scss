@@ -1,0 +1,29 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+}
+
+.pagesList {
+	display: flex;
+	align-items: center;
+	//gap: 21px;
+
+	> li {
+		color: $grayBlue;
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 130%;
+
+		cursor: pointer;
+		padding: 8.5px 14px;
+	}
+}
+
+.active {
+	background: linear-gradient(
+		90deg,
+		rgba(255, 198, 80, 0.3) 0%,
+		rgba(254, 202, 110, 0.3) 97.25%
+	);
+	border-radius: 1000px;
+}

@@ -1,0 +1,27 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+	gap: 40px;
+
+	margin: 30px 0;
+}
+
+.price {
+	font-weight: 800;
+	font-size: 30px;
+}
+
+.controls {
+	display: flex;
+	align-items: center;
+	gap: 17px;
+}
+
+.amount {
+	font-weight: 500;
+	font-size: 14px;
+	text-align: center;
+	width: 30px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

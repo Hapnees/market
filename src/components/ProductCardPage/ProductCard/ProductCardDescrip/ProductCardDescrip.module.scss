@@ -1,0 +1,17 @@
+.wrapper {
+	&::after {
+		content: '';
+		display: block;
+
+		width: 269.5px;
+		margin: 20px 0;
+		border-bottom: 1px dashed rgba($color: $grayBlue, $alpha: 1);
+	}
+}
+
+.description {
+	font-weight: 300;
+	font-size: 12px;
+	line-height: 150%;
+	width: 611px;
+}

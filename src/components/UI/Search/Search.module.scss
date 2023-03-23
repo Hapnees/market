@@ -1,0 +1,36 @@
+.wrapper {
+	display: inline-block;
+	position: relative;
+}
+
+.input {
+	background-color: #ededed;
+
+	border-radius: 36px;
+	border: none;
+
+	font-size: 12px;
+
+	width: 263px;
+	padding: 20px;
+	padding-right: 55px;
+
+	&::placeholder {
+		color: rgba($color: #5c6370, $alpha: 0.6);
+	}
+}
+
+.icon {
+	position: absolute;
+	right: 10px;
+	top: 8px;
+
+	width: 40px;
+	height: 40px;
+
+	background-color: $orange;
+	border-radius: 100%;
+
+	cursor: pointer;
+	padding: 10px;
+}

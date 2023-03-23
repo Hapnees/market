@@ -1,0 +1,22 @@
+.wrapper {
+	border-bottom: 1px solid rgba($color: $grayBlue, $alpha: 0.2);
+	padding: 10px $mainPadding;
+}
+
+.content {
+	display: flex;
+	align-items: center;
+}
+
+.logo {
+	cursor: pointer;
+	margin-right: 38px;
+}
+
+.priceBtnContainer {
+	border-right: 1px dashed rgba($color: $grayBlue, $alpha: 0.1);
+	border-left: 1px dashed rgba($color: $grayBlue, $alpha: 0.1);
+
+	margin: 0 25px;
+	padding: 0 25px;
+}

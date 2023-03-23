@@ -1,0 +1,147 @@
+.main {
+	padding: 45px $mainPadding 102px $mainPadding;
+}
+
+.breadcrumbs {
+	display: flex;
+	gap: 10px;
+
+	color: $grayBlue;
+	font-weight: 300;
+	font-size: 14px;
+	line-height: 120%;
+
+	margin-bottom: 50px;
+
+	> li {
+		cursor: pointer;
+		border-right: 1px dashed rgba($color: $grayBlue, $alpha: 0.2);
+		padding-right: 10px;
+
+		&:last-child {
+			color: rgba($color: $grayBlue, $alpha: 0.5);
+			border-right: none;
+			padding-right: 0;
+		}
+	}
+}
+
+.headerTopContent {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	margin-bottom: 25px;
+}
+
+.title {
+	font-weight: 500;
+	font-size: 40px;
+	line-height: 120%;
+	text-transform: uppercase;
+}
+
+.filterBlockTitle {
+	font-weight: 500;
+	font-size: 40px;
+	line-height: 120%;
+	text-transform: uppercase;
+
+	margin-bottom: 25px;
+}
+
+.sortWrapper {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.sortTitle {
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 150%;
+}
+
+.sortNameWrapper {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+
+	cursor: pointer;
+
+	> p {
+		color: $grayBlue;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 150%;
+	}
+}
+
+.typesList {
+	display: flex;
+	gap: 11px;
+
+	margin-bottom: 50px;
+
+	> li {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+
+		color: $grayBlue;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 17px;
+
+		box-shadow: 0px 15px 70px -11px rgba(43, 28, 1, 0.04);
+		border-radius: 10px;
+
+		height: 70px;
+		min-width: 90px;
+
+		cursor: pointer;
+
+		padding: 0 5px;
+
+		&:hover {
+			box-shadow: 0px 15px 70px -11px rgba(43, 28, 1, 0.2);
+		}
+	}
+}
+
+.content {
+	display: flex;
+	justify-content: space-between;
+}
+
+.filterBlockTitle {
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 150%;
+
+	margin-bottom: 10px;
+}
+
+.filterBtns {
+	display: flex;
+	align-items: center;
+
+	margin-bottom: 40px;
+}
+
+.productGridWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.notFound {
+	font-weight: 500;
+	font-size: 40px;
+	text-align: center;
+
+	width: 100%;
+
+	margin-top: 20px;
+}

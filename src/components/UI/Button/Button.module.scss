@@ -1,0 +1,17 @@
+.wrapper {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	white-space: nowrap;
+
+	font-weight: 700;
+	font-size: 14px;
+	color: #fff;
+
+	background-color: $orange;
+	border-radius: 79px;
+	cursor: pointer;
+
+	margin-right: 15px;
+	padding: 21px 54px;
+}

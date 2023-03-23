@@ -1,0 +1,28 @@
+.switcher {
+	display: flex;
+	gap: 6px;
+
+	> div {
+		> input {
+			display: none;
+
+			&:checked + label {
+				width: 26px;
+				opacity: 1;
+			}
+		}
+
+		> label {
+			display: block;
+
+			width: 16px;
+			height: 7px;
+
+			transition: width 0.3s;
+
+			cursor: pointer;
+
+			border-radius: 100px;
+		}
+	}
+}

@@ -1,0 +1,26 @@
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+
+	font-size: 14px;
+	line-height: 150%;
+
+	margin-bottom: 30px;
+
+	> li {
+		display: flex;
+		gap: 5px;
+
+		> p {
+			&:first-child {
+				color: $grayBlue;
+				font-weight: 300;
+			}
+
+			&:last-child {
+				font-weight: 500;
+			}
+		}
+	}
+}
