@@ -1,4 +1,7 @@
 import cl from './Map.module.scss'
+import pointerIcon from '@/assets/HomePage/Map/pointer.svg'
+import mapImage from '@/assets/HomePage/map.png'
+import paperImage from '@/assets/HomePage/paper.svg'
 
 const Map = () => {
 	return (
@@ -11,7 +14,7 @@ const Map = () => {
 					<li>
 						<p className={`${cl.listElTitle} ${cl.listElMove}`}>Адрес:</p>
 						<div className={cl.listElSubtitle}>
-							<img src='../HomePage/Map/pointer.svg' alt='' />
+							<img src={pointerIcon} alt='' />
 							<p>г. Кокчетав, ул. Ж. Ташенова 129Б (Рынок Восточный)</p>
 						</div>
 					</li>
@@ -29,13 +32,13 @@ const Map = () => {
 							Данные налогоплательщика:
 						</p>
 						<div className={cl.listElSubtitle}>
-							<img src='../HomePage/Map/paper.svg' alt='' />
+							<img src={paperImage} alt='' />
 							<p>ИП Катран Д.С. ИИН: 860113450858</p>
 						</div>
 					</li>
 				</ul>
 			</div>
-			<img src='../HomePage/map.png' alt='' />
+			<img src={mapImage} alt='' />
 		</article>
 	)
 }

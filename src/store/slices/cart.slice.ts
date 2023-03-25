@@ -1,9 +1,5 @@
-import { IProduct } from '@/types/product.interface'
+import { IProductModif } from '@/types/product.interface'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-interface IProductModif extends IProduct {
-	quantity: number
-}
 
 interface IState {
 	products: IProductModif[]
@@ -17,20 +13,38 @@ export const cartSlice = createSlice({
 	name: 'cart',
 	initialState,
 	reducers: {
-		addProduct: (state, action: PayloadAction<IProductModif>) => {
+		addProductToCart: (state, action: PayloadAction<IProductModif>) => {
 			const alreadyAddedProduct = state.products.find(
 				product => product.id === action.payload.id
 			)
+			// Если такой продукт уже в корзине, меняем его количество
 			if (alreadyAddedProduct) {
 				alreadyAddedProduct.quantity += action.payload.quantity
 			} else {
 				state.products.push(action.payload)
 			}
 		},
-		removeProduct: (state, action: PayloadAction<number>) => {
+		removeProductFromCart: (state, action: PayloadAction<number>) => {
 			state.products = state.products.filter(
 				product => product.id !== action.payload
 			)
+		},
+		clearCart: state => {
+			state.products = []
+		},
+		changeQuantity: (
+			state,
+			action: PayloadAction<{ id: number; quantity: number }>
+		) => {
+			const currentProduct = state.products.find(
+				el => el.id === action.payload.id
+			)
+			if (!currentProduct) return
+
+			const result = currentProduct.quantity + action.payload.quantity
+			if (result <= 0) return
+
+			currentProduct.quantity += action.payload.quantity
 		},
 	},
 })

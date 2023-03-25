@@ -1,23 +1,27 @@
 import Button from '../UI/Button/Button'
-import Search from '../UI/Search/Search'
+import Input from '../UI/Input/Input'
 import cl from './Footer.module.scss'
+import priceListIcon from '@/assets/Header/priceList.svg'
+import logoIcon from '@/assets/Footer/logo.svg'
+import arrowIcon from '@/assets/Footer/arrow.svg'
+import whatsappIcon from '@/assets/Footer/whatsapp_icon.png'
+import telegramIcon from '@/assets/Footer/telegram_icon.png'
+import visaIcon from '@/assets/Footer/visa_icon.png'
+import mastercardIcon from '@/assets/Footer/mastercard_icon.png'
 
 const Footer = () => {
 	return (
 		<footer className={cl.footer}>
 			<ul className={cl.list}>
 				<li>
-					<img src='../Footer/logo.svg' alt='' className={cl.logo} />
+					<img src={logoIcon} alt='' className={cl.logo} />
 					<p className={cl.text}>
 						Компания «Султан» — снабжаем розничные магазины товарами "под ключ"
 						в Кокчетаве и Акмолинской области
 					</p>
 
 					<p className={cl.subscribe}>Подпишись на скидки и акции</p>
-					<Search
-						placeholder='Введите ваш E-mail'
-						srcImg='../Footer/arrow.svg'
-					/>
+					<Input placeholder='Введите ваш E-mail' srcImg={arrowIcon} />
 				</li>
 				<li>
 					<p className={cl.listElTitle}>Меню сайта:</p>
@@ -44,18 +48,15 @@ const Footer = () => {
 				<li>
 					<p className={cl.listElTitle}>Скачать прайс-лист:</p>
 
-					<Button
-						srcImg='../Header/priceList.svg'
-						style={{ marginBottom: '20px' }}
-					>
+					<Button srcImg={priceListIcon} style={{ marginBottom: '20px' }}>
 						Прайс-лист
 					</Button>
 
 					<p className={cl.contact}>Связь в мессенджерах:</p>
 
 					<div className={cl.contactIcons}>
-						<img src='../Footer/whatsapp_icon.png' alt='' />
-						<img src='../Footer/telegram_icon.png' alt='' />
+						<img src={whatsappIcon} alt='' />
+						<img src={telegramIcon} alt='' />
 					</div>
 				</li>
 
@@ -72,8 +73,8 @@ const Footer = () => {
 					</div>
 
 					<div className={cl.cardIcons}>
-						<img src='../Footer/visa_icon.png' alt='' />
-						<img src='../Footer/mastercard_icon.png' alt='' />
+						<img src={visaIcon} alt='' />
+						<img src={mastercardIcon} alt='' />
 					</div>
 				</li>
 			</ul>

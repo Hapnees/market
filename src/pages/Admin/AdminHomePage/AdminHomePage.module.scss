@@ -1,0 +1,46 @@
+.main {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 30px $mainPadding;
+}
+
+.container {
+	background-color: rgba($color: $orange, $alpha: 0.5);
+	border-radius: 10px;
+	padding: 20px 0 0 0;
+}
+
+.title {
+	text-align: center;
+
+	font-size: 30px;
+	font-weight: 500;
+	letter-spacing: 0.5px;
+
+	margin-bottom: 20px;
+}
+
+.list {
+	> li {
+		display: flex;
+		cursor: pointer;
+
+		&:last-child {
+			border-bottom-left-radius: 10px;
+			border-bottom-right-radius: 10px;
+		}
+
+		&:hover {
+			background-color: #ffc85e;
+		}
+
+		> a {
+			width: 100%;
+			text-align: center;
+			padding: 20px 120px;
+			color: #000;
+		}
+	}
+}

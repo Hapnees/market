@@ -1,15 +1,9 @@
-import { getProductsPromo } from '@/api/products.api'
-import { IProduct } from '@/types/product.interface'
-import { useEffect, useState } from 'react'
+import { useGetProductsPromoQuery } from '@/api/api'
 import ProductGrid from '../../ProductGrid/ProductGrid'
 import cl from './ProductsPromo.module.scss'
 
 const ProductsPromo = () => {
-	const [products, setProducts] = useState<IProduct[]>([])
-
-	useEffect(() => {
-		getProductsPromo().then(data => setProducts(data))
-	}, [])
+	const { data: products } = useGetProductsPromoQuery()
 
 	return (
 		<article className={cl.wrapper}>
@@ -17,7 +11,7 @@ const ProductsPromo = () => {
 				<span>Акционные</span> товары
 			</p>
 
-			<ProductGrid products={products} style={{ marginTop: '50px' }} />
+			<ProductGrid products={products || []} style={{ marginTop: '50px' }} />
 		</article>
 	)
 }

@@ -1,0 +1,17 @@
+.main {
+	display: flex;
+	justify-content: center;
+
+	padding: 50px 0;
+}
+
+.list {
+	display: flex;
+	gap: 100px;
+}
+
+.buttons {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}

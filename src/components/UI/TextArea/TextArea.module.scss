@@ -1,0 +1,28 @@
+.textarea {
+	border: none;
+	background: #ededed;
+
+	font-family: Inter;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 150%;
+
+	border-radius: 36px;
+	resize: none;
+
+	width: 289px;
+	height: 324px;
+
+	padding: 20px 30px;
+
+	&::placeholder {
+		color: rgba($color: $grayBlue, $alpha: 0.6);
+	}
+}
+
+.error {
+	font-size: 14px;
+	color: rgb(216, 35, 35);
+
+	margin-top: 10px;
+}

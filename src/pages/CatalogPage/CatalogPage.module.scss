@@ -50,7 +50,7 @@
 	margin-bottom: 25px;
 }
 
-.sortWrapper {
+.sortListWrapper {
 	display: flex;
 	align-items: center;
 	gap: 5px;
@@ -62,19 +62,21 @@
 	line-height: 150%;
 }
 
-.sortNameWrapper {
+.sortWrapper {
 	display: flex;
 	align-items: center;
 	gap: 5px;
+}
 
+.selector {
+	border: none;
+	background-color: #fefefe;
+
+	color: $grayBlue;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 150%;
 	cursor: pointer;
-
-	> p {
-		color: $grayBlue;
-		font-weight: 400;
-		font-size: 16px;
-		line-height: 150%;
-	}
 }
 
 .typesList {
@@ -144,4 +146,8 @@
 	width: 100%;
 
 	margin-top: 20px;
+}
+
+.active {
+	background-color: #e1e1e1;
 }

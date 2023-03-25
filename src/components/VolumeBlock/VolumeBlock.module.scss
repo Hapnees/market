@@ -1,0 +1,12 @@
+.container {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	color: $grayBlue;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 130%;
+
+	margin-bottom: 10px;
+}

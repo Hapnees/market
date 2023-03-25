@@ -1,4 +1,5 @@
 import cl from './HeaderCallBlock.module.scss'
+import callIcon from '@/assets/Header/call.png'
 
 const HeaderCallBlock = () => {
 	return (
@@ -11,7 +12,7 @@ const HeaderCallBlock = () => {
 
 			<div className={cl.imgContainer}>
 				<div className={cl.circle}></div>
-				<img src='../Header/call.png' alt='' />
+				<img src={callIcon} alt='' />
 			</div>
 		</article>
 	)

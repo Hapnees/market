@@ -1,28 +1,40 @@
-import {
-	getBrends,
-	getProducers,
-	getProducts,
-	getTypes,
-} from '@/api/products.api'
-import FilterBlock from '@/components/CatalogPage/FilterBlock/FilterBlock'
+import FilterBlock from '@/FilterBlock/FilterBlock'
 import PriceController from '@/components/CatalogPage/PriceController/PriceController'
 import Pagination from '@/components/Pagination/Pagination'
 import ProductGrid from '@/components/ProductGrid/ProductGrid'
 import Button from '@/components/UI/Button/Button'
-import { IGetProductsArgs, IProduct } from '@/types/product.interface'
+import { IFilterList, IGetProductsParams } from '@/types/product.interface'
+import getFormattedFilterList from '@/formatters/filterList.formatter'
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import cl from './CatalogPage.module.scss'
+import useSetUrlParams from '@/hooks/useSetSearchParams'
+import {
+	useLazyGetBrendsQuery,
+	useLazyGetProducersQuery,
+	useLazyGetProductsQuery,
+	useLazyGetTypesQuery,
+} from '@/api/api'
+import trashIcon from '@/assets/CatalogPage/trash.svg'
 
 const limit = 15
 
 const CatalogPage = () => {
-	const [producersList, setProducersList] = useState<string[]>([])
-	const [brendsList, setBrendsList] = useState<string[]>([])
-	const [typesList, setTypesList] = useState<string[]>([])
-	const [productsList, setProductsList] = useState<IProduct[]>([])
+	const [getProducts, { data }] = useLazyGetProductsQuery()
+	const [getProducers] = useLazyGetProducersQuery()
+	const [getBrends] = useLazyGetBrendsQuery()
+	const [getTypes] = useLazyGetTypesQuery()
+
+	const [producersList, setProducersList] = useState<IFilterList[]>([])
+	const [brendsList, setBrendsList] = useState<IFilterList[]>([])
+	const [typesList, setTypesList] = useState<IFilterList[]>([])
+
+	const [order, setOrder] = useState<string | undefined>(undefined)
+	const [sort, setSort] = useState<string | undefined>(undefined)
 
 	const [searchParams, setSearchParams] = useSearchParams()
+
+	const setUrlParams = useSetUrlParams(searchParams, setSearchParams)
 
 	// Минимальная и максимальная цены
 	// Берём их из URL, если они там указаны
@@ -34,6 +46,10 @@ const CatalogPage = () => {
 		searchParams.get('maxPrice') || ''
 	)
 
+	// Параметры фильтрации
+	// Берём их из URL, если они там указаны
+	const sortParam = searchParams.get('sort')
+	const orderParam = searchParams.get('order')
 	const producersParam = searchParams.get('producer') || ''
 	const brendsParam = searchParams.get('brend') || ''
 	const typesParam = searchParams.get('type') || ''
@@ -67,7 +83,7 @@ const CatalogPage = () => {
 
 	// При клике на кнопку "Показать" отправляем запрос с фильтрами
 	const onClickShow = () => {
-		const params: IGetProductsArgs = {}
+		const params: IGetProductsParams = {}
 		if (currentPage > 1) params.page = currentPage
 		if (limit > 0) params.limit = limit
 		if (brendsParam) params.brends = brendsParam
@@ -75,19 +91,72 @@ const CatalogPage = () => {
 		if (typesParam) params.types = typesParam
 		if (+minPrice > 0) params.minPrice = +minPrice
 		if (+maxPrice > minPrice) params.maxPrice = +maxPrice
+		if (sortParam) params.sort = sortParam
+		if (orderParam) params.order = orderParam
 
-		getProducts(params).then(res => {
-			setProductsList(res.data)
-			// Получаем общее число продуктов
-			setTotalPages(Math.ceil(res.data.length / limit))
-		})
+		getProducts(params)
+			.unwrap()
+			.then(res => {
+				// Получаем общее число продуктов
+				setTotalPages(Math.ceil(res.products.length / limit))
+			})
+	}
+
+	const onClickTypesListEl = (title: string) => {
+		const copy = [...typesList]
+		const tmpEl = copy.find(el => el.title === title)
+		if (tmpEl) tmpEl.selected = !tmpEl.selected
+		setTypesList(copy)
+
+		setUrlParams(title, 'type')
+		setSearchParams(searchParams)
+	}
+
+	const onChangeSelector = (
+		name: string,
+		value: string,
+		cb?: (value: string) => void
+	) => {
+		searchParams.set(name, value)
+		setSearchParams(searchParams)
+	}
+
+	// Очищаем все фильтры и параметры сортировки
+	const onClickTrash = () => {
+		setSearchParams()
+		setProducersList(prev => prev.map(el => ({ ...el, selected: false })))
+		setBrendsList(prev => prev.map(el => ({ ...el, selected: false })))
+		setTypesList(prev => prev.map(el => ({ ...el, selected: false })))
+		setSort(undefined)
+		setOrder(undefined)
+		setMinPrice('')
+		setMaxPrice('')
 	}
 
 	useEffect(() => {
 		// Получаем производителей, бренды и типы ухода
-		getProducers().then(data => setProducersList(data))
-		getBrends().then(data => setBrendsList(data))
-		getTypes().then(data => setTypesList(data))
+		getProducers()
+			.unwrap()
+			.then(data => {
+				const resultData = getFormattedFilterList(
+					searchParams,
+					data,
+					'producer'
+				)
+				setProducersList(resultData)
+			})
+		getBrends()
+			.unwrap()
+			.then(data => {
+				const resultData = getFormattedFilterList(searchParams, data, 'brend')
+				setBrendsList(resultData)
+			})
+		getTypes()
+			.unwrap()
+			.then(data => {
+				const resultData = getFormattedFilterList(searchParams, data, 'type')
+				setTypesList(resultData)
+			})
 	}, [])
 
 	// Следим за фильтрами и пагинацией
@@ -103,12 +172,11 @@ const CatalogPage = () => {
 
 	// Получаем продукты
 	useEffect(() => {
-		getProducts({ page: currentPage, limit }).then(res => {
-			setProductsList(res.data)
-			// Получаем общее число продуктов
-			const totalCount = res.headers['x-total-count']
-			setTotalPages(Math.ceil(totalCount / limit))
-		})
+		getProducts({ page: currentPage, limit })
+			.unwrap()
+			.then(res => {
+				setTotalPages(Math.ceil((res.totalCount || 0) / limit))
+			})
 	}, [currentPage])
 
 	return (
@@ -125,18 +193,65 @@ const CatalogPage = () => {
 				{/*HEADER TOP CONTENT*/}
 				<div className={cl.headerTopContent}>
 					<h1 className={cl.title}>Косметика и гигиена</h1>
-					<div className={cl.sortWrapper}>
+					<div className={cl.sortListWrapper}>
 						<p className={cl.sortTitle}>Сортировка:</p>
+						{/*SORT BLOCK*/}
+						<div className={cl.sortWrapper}>
+							<select
+								name='order'
+								id='order'
+								className={cl.selector}
+								value={order}
+								onClick={event =>
+									onChangeSelector(
+										event.currentTarget.name,
+										event.currentTarget.value,
+										() => setOrder(event.currentTarget.value)
+									)
+								}
+								defaultValue={orderParam || undefined}
+							>
+								<option disabled defaultChecked>
+									Направление
+								</option>
+								<option value='asc'>По возрастанию</option>
+								<option value='desc'>По убыванию</option>
+							</select>
+						</div>
 						<div className={cl.sortNameWrapper}>
-							<p>Название</p>
-							<img src='../arrow_black.svg' alt='' />
+							<select
+								name='sort'
+								id='sort'
+								className={cl.selector}
+								value={sort}
+								onChange={event =>
+									onChangeSelector(
+										event.currentTarget.name,
+										event.currentTarget.value,
+										() => setSort(event.currentTarget.value)
+									)
+								}
+								defaultValue={sortParam || undefined}
+							>
+								<option disabled defaultChecked>
+									Поле
+								</option>
+								<option value='title'>Название</option>
+								<option value='price'>Цена</option>
+							</select>
 						</div>
 					</div>
 				</div>
 				{/*HEADER BOTTOM CONTENT*/}
 				<ul className={cl.typesList}>
-					{typesList.map((type, idx) => (
-						<li key={idx}>{type}</li>
+					{typesList.map(type => (
+						<li
+							key={type.title}
+							className={type.selected ? cl.active : ''}
+							onClick={() => onClickTypesListEl(type.title)}
+						>
+							{type.title}
+						</li>
 					))}
 				</ul>
 			</section>
@@ -169,8 +284,9 @@ const CatalogPage = () => {
 						<Button onClick={onClickShow}>Показать</Button>
 						{/*REQUEST*/}
 						<Button
-							srcImg='../CatalogPage/trash.svg'
+							srcImg={trashIcon}
 							style={{ padding: '20px' }}
+							onClick={onClickTrash}
 						></Button>
 					</div>
 					<FilterBlock
@@ -181,18 +297,20 @@ const CatalogPage = () => {
 					/>
 				</article>
 
-				{productsList?.length ? (
+				{data?.products?.length ? (
 					<article className={cl.productGridWrapper}>
 						<ProductGrid
-							products={productsList}
+							products={data.products}
 							columns={3}
 							style={{ marginBottom: '50px' }}
 						/>
-						<Pagination
-							currentPage={currentPage}
-							paginate={paginate}
-							totalPages={totalPages}
-						/>
+						{totalPages > 1 && (
+							<Pagination
+								currentPage={currentPage}
+								paginate={paginate}
+								totalPages={totalPages}
+							/>
+						)}
 					</article>
 				) : (
 					<p className={cl.notFound}>Товары не найдены</p>

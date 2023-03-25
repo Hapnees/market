@@ -1,5 +1,6 @@
 .wrapper {
 	display: inline-block;
+	align-self: flex-start;
 	position: relative;
 }
 
@@ -9,15 +10,24 @@
 	border-radius: 36px;
 	border: none;
 
+	font-family: Inter;
 	font-size: 12px;
 
 	width: 263px;
 	padding: 20px;
-	padding-right: 55px;
+	//padding-right: 55px;
 
 	&::placeholder {
 		color: rgba($color: #5c6370, $alpha: 0.6);
 	}
+
+	&::-webkit-outer-spin-button,
+	&::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	-moz-appearance: textfield;
 }
 
 .icon {
@@ -33,4 +43,12 @@
 
 	cursor: pointer;
 	padding: 10px;
+}
+
+.error {
+	font-size: 14px;
+	white-space: nowrap;
+	color: rgb(216, 35, 35);
+
+	margin-top: 10px;
 }

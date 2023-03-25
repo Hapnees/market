@@ -1,0 +1,46 @@
+.wrapper {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	width: 735px;
+	height: 424px;
+
+	background: #fff;
+	border-radius: 8px;
+}
+
+.img {
+	background-color: $orange;
+	border-radius: 79px;
+
+	margin-bottom: 24px;
+	padding: 24.5px 19.5px;
+}
+
+.title {
+	text-transform: uppercase;
+	font-weight: 500;
+	font-size: 40px;
+	line-height: 120%;
+
+	margin-bottom: 20px;
+}
+
+.subtitle {
+	color: $grayBlue;
+	font-weight: 300;
+	font-size: 20px;
+	line-height: 120%;
+}
+
+.cross {
+	position: absolute;
+	right: 36px;
+	top: 36px;
+
+	padding: 5px;
+	cursor: pointer;
+}

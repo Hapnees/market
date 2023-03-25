@@ -1,7 +1,7 @@
 export interface IProduct {
 	id: number
 	title: string
-	img: string
+	img?: string
 	typeSize: string
 	size: number
 	amount: number
@@ -15,7 +15,11 @@ export interface IProduct {
 	promo: boolean
 }
 
-export interface IGetProductsArgs {
+export interface IProductModif extends IProduct {
+	quantity: number
+}
+
+export interface IGetProductsParams {
 	page?: number
 	limit?: number
 	minPrice?: number
@@ -23,4 +27,23 @@ export interface IGetProductsArgs {
 	types?: string
 	brends?: string
 	producers?: string
+	sort?: string
+	order?: string
+}
+
+export interface IFilterList {
+	title: string
+	selected: boolean
+}
+
+export type ICategoryProducts = 'PROMO' | 'ALL' | ''
+
+export interface ICheckout {
+	name: string
+	phone: number
+	email: string
+	orgName: string
+	city: string
+	address: string
+	comment?: string
 }

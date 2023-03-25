@@ -4,6 +4,9 @@
 	gap: 12px;
 	white-space: nowrap;
 
+	border: none;
+
+	font-family: Inter;
 	font-weight: 700;
 	font-size: 14px;
 	color: #fff;
@@ -12,6 +15,9 @@
 	border-radius: 79px;
 	cursor: pointer;
 
-	margin-right: 15px;
 	padding: 21px 54px;
+
+	&:hover {
+		background-color: #ffb219;
+	}
 }

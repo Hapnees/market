@@ -1,5 +1,6 @@
-import { FC, HTMLAttributes, PropsWithChildren, useState } from 'react'
+import { FC, HTMLAttributes, useState } from 'react'
 import cl from './TitleWithArrow.module.scss'
+import arrowBlackIcon from '@/assets/arrow_black.svg'
 
 interface IProps extends HTMLAttributes<HTMLDivElement> {
 	onClick: () => void
@@ -23,7 +24,7 @@ const TitleWithArrow: FC<IProps> = ({
 			<p>{children}</p>
 			<img
 				className={cl.title}
-				src='../arrow_black.svg'
+				src={arrowBlackIcon}
 				alt=''
 				style={{ transform: isClicked || condition ? 'rotate(180deg)' : '' }}
 			/>

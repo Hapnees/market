@@ -10,6 +10,7 @@
 
 .leftSideMenu {
 	display: flex;
+
 	> li {
 		display: flex;
 		align-items: center;
@@ -42,8 +43,11 @@
 }
 
 .navbar {
+	display: flex;
+	align-items: center;
 	font-size: 14px;
 	line-height: 150%;
+
 	a {
 		color: $grayBlue;
 		padding: 0 30px;
@@ -57,5 +61,52 @@
 			border-right: none;
 			padding-right: 0;
 		}
+	}
+}
+
+// Для админ-мода
+.adminControls {
+	position: relative;
+}
+
+.adminList {
+	position: absolute;
+	top: 30px;
+	background-color: $orange;
+	border-radius: 6px;
+
+	animation: adminListShow 0.3s;
+
+	z-index: 1;
+
+	> li {
+		color: #fff;
+		font-weight: 600;
+		white-space: nowrap;
+		padding: 5px 10px;
+		cursor: pointer;
+
+		&:first-child {
+			border-top-right-radius: 6px;
+			border-top-left-radius: 6px;
+		}
+
+		&:last-child {
+			border-bottom-right-radius: 6px;
+			border-bottom-left-radius: 6px;
+		}
+
+		&:hover {
+			background-color: #ffaa00;
+		}
+	}
+}
+
+@keyframes adminListShow {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
 	}
 }

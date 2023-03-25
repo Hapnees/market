@@ -4,7 +4,9 @@ import {
 	InputHTMLAttributes,
 	KeyboardEvent,
 } from 'react'
-import cl from './Search.module.scss'
+import { FieldError } from 'react-hook-form'
+import cl from './Input.module.scss'
+import searcIcon from '@/assets/Search/search.svg'
 
 interface IProps
 	extends DetailedHTMLProps<
@@ -13,10 +15,12 @@ interface IProps
 	> {
 	srcImg?: string
 	searchEvent?: () => void
+	error?: FieldError
+	isAbsolute?: boolean
 }
 
-const Search = forwardRef<HTMLInputElement, IProps>(
-	({ srcImg = '../Search/search.svg', searchEvent, ...props }, ref) => {
+const Input = forwardRef<HTMLInputElement, IProps>(
+	({ srcImg = searcIcon, searchEvent, isAbsolute, error, ...props }, ref) => {
 		const onKeyDownEnter = (event: KeyboardEvent<HTMLInputElement>) => {
 			if (!searchEvent) return
 
@@ -33,14 +37,23 @@ const Search = forwardRef<HTMLInputElement, IProps>(
 					placeholder='Поиск...'
 					ref={ref}
 					onKeyDown={event => onKeyDownEnter(event)}
+					style={{ paddingRight: srcImg ? '55px' : '20px' }}
 					{...props}
 				/>
 				{srcImg && (
 					<img src={srcImg} alt='' className={cl.icon} onClick={searchEvent} />
+				)}
+				{error && (
+					<p
+						className={cl.error}
+						style={{ position: isAbsolute ? 'absolute' : 'relative' }}
+					>
+						{error.message}
+					</p>
 				)}
 			</div>
 		)
 	}
 )
 
-export default Search
+export default Input

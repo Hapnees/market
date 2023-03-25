@@ -1,18 +1,14 @@
-import { getProductById } from '@/api/products.api'
 import { IProduct } from '@/types/product.interface'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import ProductCardInfo from './ProductCardInfo/ProductCardInfo'
 import cl from './ProductCard.module.scss'
 
-const ProductCard = () => {
-	const params = useParams<{ id: string }>()
-	const [product, setProduct] = useState<IProduct>()
+interface IProps {
+	product?: IProduct
+}
 
-	useEffect(() => {
-		getProductById(+params.id!).then(data => setProduct(data))
-	}, [])
-
+const ProductCard: FC<IProps> = ({ product }) => {
 	return (
 		<section className={cl.wrapper}>
 			{product && (

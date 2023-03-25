@@ -1,3 +1,4 @@
+import VolumeBlock from '@/components/VolumeBlock/VolumeBlock'
 import { IProduct } from '@/types/product.interface'
 import modifTitle from '@/utils/modifTitle'
 import { FC } from 'react'
@@ -29,13 +30,7 @@ const ProductCardInfo: FC<IProps> = ({ product }) => {
 				<span>{firstLetter}</span> {title}
 			</p>
 
-			{/*WEIGHT BLOCK*/}
-			<div className={cl.weightWrapper}>
-				<img src='../ProductCard/box.svg' alt='' />
-				<p>
-					{product.size} {product.typeSize}
-				</p>
-			</div>
+			<VolumeBlock product={product} />
 
 			{/*CONTROLS*/}
 			<ProductCardMainControls product={product} />

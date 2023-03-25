@@ -1,14 +1,24 @@
-import Search from '@/components/UI/Search/Search'
+import Input from '@/components/UI/Input/Input'
 import TitleWithArrow from '@/components/UI/TitleWithArrow/TitleWithArrow'
-import { FC, useEffect, useRef, useState } from 'react'
+import useSetUrlParams from '@/hooks/useSetSearchParams'
+import { IFilterList } from '@/types/product.interface'
+import {
+	FC,
+	HtmlHTMLAttributes,
+	memo,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
 import { useSearchParams } from 'react-router-dom'
 import cl from './FilterBlock.module.scss'
 
-interface IProps {
+interface IProps extends HtmlHTMLAttributes<HTMLDivElement> {
 	title: string
-	list: string[]
+	list: IFilterList[]
 	isShowBorder?: boolean
-	param: string
+	param?: string
+	callback?: (value: string) => unknown
 }
 
 const FilterBlock: FC<IProps> = ({
@@ -16,24 +26,38 @@ const FilterBlock: FC<IProps> = ({
 	list,
 	isShowBorder = true,
 	param,
+	callback,
+	...props
 }) => {
+	const isGotList = useRef<boolean>(false)
 	const search = useRef<HTMLInputElement>(null)
 	const [currentList, setCurrentList] = useState(list)
 	const [searchParams, setSearchParams] = useSearchParams()
+
+	const setUrlParams = useSetUrlParams(searchParams, setSearchParams)
 
 	const [isShowAll, setIsShowAll] = useState(false)
 
 	// Сетаем параметр в URl при его изменении
 	const onChangeCheckbox = (value: string) => {
-		const paramList = searchParams.get(param)
-			? searchParams.get(param)!.split(',')
-			: []
+		// Переключаем чекбокс
+		const copy = [...currentList]
+		const tmpEl = copy.find(el => el.title === value)
+		if (tmpEl) tmpEl.selected = !tmpEl.selected
+		setCurrentList(copy)
+		//
 
-		if (paramList?.includes(value))
-			searchParams.set(param, paramList.filter(el => el !== value).join(','))
-		else searchParams.set(param, [...paramList, value].join(','))
+		// TODO:
+		if (param) {
+			setUrlParams(value, param)
+			setSearchParams(searchParams)
+		}
 
-		setSearchParams(searchParams)
+		// Выполняем коллбэк, если он был передан
+		if (callback) {
+			callback(value)
+		}
+		////
 	}
 
 	const onClickTitleArrow = () => {
@@ -52,7 +76,7 @@ const FilterBlock: FC<IProps> = ({
 		} else {
 			setCurrentList(
 				list.filter(el =>
-					el.toLowerCase().includes(search.current!.value.toLowerCase())
+					el.title.toLowerCase().includes(search.current!.value.toLowerCase())
 				)
 			)
 			setIsShowAll(true)
@@ -62,24 +86,28 @@ const FilterBlock: FC<IProps> = ({
 	// Следим за фильтром
 	// Если параметр равен своему минимальному значению, удаляем его из URL
 	useEffect(() => {
-		console.log(searchParams.get(param))
+		if (!param) return
+
 		if (!searchParams.get(param)) searchParams.delete(param)
 		setSearchParams(searchParams)
-	}, [searchParams.get(param)])
+	}, [searchParams])
 
-	// Сетаем список пунктов
+	// Сетаем фильтр-лист
 	useEffect(() => {
+		if (isGotList.current || !list?.length) return
+
 		setCurrentList(list)
+		isGotList.current = true
 	}, [list])
 
 	return (
-		<article className={cl.wrapper}>
+		<article className={cl.wrapper} {...props}>
 			<div>
 				<div>
 					<p className={cl.title} style={{ marginBottom: '15px' }}>
 						{title}
 					</p>
-					<Search
+					<Input
 						ref={search}
 						style={{ marginBottom: '15px' }}
 						searchEvent={searchEvent}
@@ -88,14 +116,15 @@ const FilterBlock: FC<IProps> = ({
 					<div className={isShowBorder ? `${cl.producersListWrapper}` : ''}>
 						<ul className={cl.producersList}>
 							{(isShowAll ? currentList : currentList?.slice(0, 4))?.map(
-								producer => (
-									<li key={producer}>
+								element => (
+									<li key={element.title}>
 										<input
 											type='checkbox'
-											id={producer}
+											id={element.title}
+											checked={element.selected}
 											onChange={event => onChangeCheckbox(event.target.id)}
 										/>
-										<label htmlFor={producer}>{producer}</label>
+										<label htmlFor={element.title}>{element.title}</label>
 									</li>
 								)
 							)}
@@ -114,4 +143,4 @@ const FilterBlock: FC<IProps> = ({
 	)
 }
 
-export default FilterBlock
+export default memo(FilterBlock)

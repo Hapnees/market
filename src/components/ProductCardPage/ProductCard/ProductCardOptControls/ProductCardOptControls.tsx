@@ -1,10 +1,12 @@
 import cl from './ProductCardOptControls.module.scss'
+import shareIcon from '@/assets/ProductCard/share.svg'
+import priceListIcon from '@/assets/ProductCard/priceList.svg'
 
 const ProductCardOptControls = () => {
 	return (
 		<article className={cl.wrapper}>
 			<div>
-				<img src='../ProductCard/share.svg' alt='' />
+				<img src={shareIcon} alt='' />
 			</div>
 			<div>
 				<p>
@@ -14,7 +16,7 @@ const ProductCardOptControls = () => {
 			</div>
 			<div className={cl.priceListBtn}>
 				<p>Прайс-лист</p>
-				<img src='../ProductCard/priceList.svg' alt='' width={12} height={12} />
+				<img src={priceListIcon} alt='' width={12} height={12} />
 			</div>
 		</article>
 	)
