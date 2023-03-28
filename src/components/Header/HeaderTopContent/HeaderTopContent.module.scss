@@ -6,7 +6,6 @@
 	border-bottom: 1px solid rgba($color: $grayBlue, $alpha: 0.2);
 
 	@include adaptive-padding(14, 277, 60, 1154);
-	//padding: 14px calc(60px + (277 - 60) * ((100vw - 1154px) / (1920 - 1154)));
 }
 
 .leftSideMenu {
@@ -21,7 +20,6 @@
 		//padding: 0 20px;
 
 		@include adaptive-padding(0, 20, 11, 1134);
-		//padding: 0 calc(11px + (20 - 11) * ((100vw - 1134px) / (1920 - 1134)));
 
 		&:first-child {
 			padding-left: 0;
@@ -37,7 +35,7 @@
 		margin-left: 15px;
 	}
 
-	@media (max-width: 539px) {
+	@media (max-width: 579px) {
 		display: none;
 	}
 }
@@ -67,7 +65,6 @@
 	a {
 		color: $grayBlue;
 		@include adaptive-padding(0, 30, 13, 1154);
-		//padding: 0 calc(13px + (30 - 13) * ((100vw - 1154px) / (1920 - 1154)));
 
 		border-right: 1px dashed rgba($color: $grayBlue, $alpha: 0.01);
 
@@ -120,12 +117,13 @@
 	}
 }
 
-@keyframes adminListShow {
-	from {
-		transform: scale(0);
-	}
-	to {
-		transform: scale(1);
+.adaptiveAdminList {
+	top: 65px;
+	right: 20px;
+
+	@media (max-width: 579px) {
+		right: auto;
+		left: 10px;
 	}
 }
 
@@ -134,14 +132,17 @@
 	align-items: center;
 	justify-content: space-between;
 
-	& > *:not(:first-child) {
+	& > *:not(:first-child, :nth-child(2)) {
+		display: none;
+	}
+
+	@media (min-width: 1071px) {
 		display: none;
 	}
 
 	@media (max-width: 539px) {
-		& > *:not(:first-child) {
-			display: block;
-		}
+		display: flex;
+		justify-content: start;
 
 		width: 100%;
 		padding: 0 15px;
@@ -149,8 +150,35 @@
 }
 
 .logo {
-	aspect-ratio: 77 / 33;
-	//width: 156px;
+	aspect-ratio: 7 / 3;
 	@include adaptive-size(width, 156, 97);
-	//width: calc(97px + (156 - 97) * ((100vw - 320px) / (1920 - 320)));
+}
+
+.adminButton {
+	color: #fff;
+	font-weight: 800;
+	background-color: rgba(255, 30, 30, 0.722);
+	border-radius: 100%;
+
+	cursor: pointer;
+
+	margin-right: 10px;
+	padding: 8px 12px;
+
+	@media (max-width: 579px) {
+		margin-left: 10px;
+	}
+
+	@media (max-width: 539px) {
+		margin-left: 0;
+	}
+}
+
+@keyframes adminListShow {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
+	}
 }

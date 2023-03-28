@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router'
 import BackButton from '@/components/UI/BackButton/BackButton'
 import { useSearchParams } from 'react-router-dom'
 import { IFilterListEl } from '@/types/product.interface'
+import Loader from '@/components/Loader/Loader'
 
 interface IProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
@@ -30,8 +31,9 @@ const HeaderBurgerCatalogPage: FC<IProps> = ({
 }) => {
 	const navigate = useNavigate()
 
-	const [getProducers] = useLazyGetProducersQuery()
-	const [getBrends] = useLazyGetBrendsQuery()
+	const [getProducers, { isLoading: isLoadingProducers }] =
+		useLazyGetProducersQuery()
+	const [getBrends, { isLoading: isLoadingBrends }] = useLazyGetBrendsQuery()
 
 	const [searchParams, setSearchParams] = useSearchParams()
 
@@ -87,26 +89,32 @@ const HeaderBurgerCatalogPage: FC<IProps> = ({
 
 	return (
 		<article className={`${cl.wrapper} ${className}`} {...props}>
-			<BackButton onClick={onClickBackBtn} />
-			<h1 className={cl.title}>Косметика и гигиена</h1>
-			<PriceController
-				minPrice={minPrice}
-				maxPrice={maxPrice}
-				onChangeMaxPrice={onChangeMaxPrice}
-				onChangeMinPrice={onChangeMinPrice}
-			/>
-			<FilterBlock
-				title='Производитель'
-				list={producersList}
-				param='producer'
-			/>
-			<FilterBlock title='Бренд' list={brendsList} param='brend' />
-			<div className={cl.filterBtns}>
-				{/*REQUEST*/}
-				<Button>Показать</Button>
-				{/*REQUEST*/}
-				<Button srcImg={trashIcon} style={{ padding: '20px' }}></Button>
-			</div>
+			{isLoadingProducers || isLoadingBrends ? (
+				<Loader />
+			) : (
+				<>
+					<BackButton onClick={onClickBackBtn} />
+					<h1 className={cl.title}>Косметика и гигиена</h1>
+					<PriceController
+						minPrice={minPrice}
+						maxPrice={maxPrice}
+						onChangeMaxPrice={onChangeMaxPrice}
+						onChangeMinPrice={onChangeMinPrice}
+					/>
+					<FilterBlock
+						title='Производитель'
+						list={producersList}
+						param='producer'
+					/>
+					<FilterBlock title='Бренд' list={brendsList} param='brend' />
+					<div className={cl.filterBtns}>
+						{/*REQUEST*/}
+						<Button>Показать</Button>
+						{/*REQUEST*/}
+						<Button srcImg={trashIcon} style={{ padding: '20px' }}></Button>
+					</div>
+				</>
+			)}
 		</article>
 	)
 }

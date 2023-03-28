@@ -32,7 +32,6 @@
 
 		background-color: #fff;
 
-		//width: 20px;
 		@include adaptive-size(width, 20, 14);
 		height: 2px;
 
@@ -41,7 +40,6 @@
 		&::before {
 			content: '';
 			position: absolute;
-			//top: -6px;
 
 			@include adaptive-size(top, -6, -5);
 			width: inherit;
@@ -54,7 +52,6 @@
 		&::after {
 			content: '';
 			position: absolute;
-			//top: 6px;
 
 			@include adaptive-size(top, 6, 5);
 			width: inherit;

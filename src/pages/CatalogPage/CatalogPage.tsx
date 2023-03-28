@@ -20,6 +20,8 @@ import { IBreadCrumbsEl } from '@/types/breadcrumbs.interface'
 import FilterTypesMini from '@/components/FilterTypesMini/FilterTypesMini'
 import BackButton from '@/components/UI/BackButton/BackButton'
 import Loader from '@/components/Loader/Loader'
+import { IBrend, IProducer, IType } from '@/types/filters.type.interface'
+import { toast } from 'react-toastify'
 
 const limit = 15
 
@@ -37,9 +39,11 @@ const CatalogPage = () => {
 	const [getBrends, { isLoading: isLoadingBrends }] = useLazyGetBrendsQuery()
 	const [getTypes, { isLoading: isLoadingTypes }] = useLazyGetTypesQuery()
 
-	const [producersList, setProducersList] = useState<IFilterListEl[]>([])
-	const [brendsList, setBrendsList] = useState<IFilterListEl[]>([])
-	const [typesList, setTypesList] = useState<string[]>([])
+	const [producersList, setProducersList] = useState<
+		(IProducer & IFilterListEl)[]
+	>([])
+	const [brendsList, setBrendsList] = useState<(IBrend & IFilterListEl)[]>([])
+	const [typesList, setTypesList] = useState<(IType & IFilterListEl)[]>([])
 
 	const [order, setOrder] = useState<string | undefined>(undefined)
 	const [sort, setSort] = useState<string | undefined>(undefined)
@@ -107,6 +111,7 @@ const CatalogPage = () => {
 				// Получаем общее число продуктов
 				setTotalPages(Math.ceil(res.totalCount / limit))
 			})
+			.catch(() => toast.error('Ошибка при получении товаров'))
 	}
 
 	const onClickTypesListEl = (title: string) => {
@@ -151,17 +156,21 @@ const CatalogPage = () => {
 				)
 				setProducersList(resultData)
 			})
+			.catch(() => toast.error('Ошибка при получении производителей'))
 		getBrends()
 			.unwrap()
 			.then(data => {
 				const resultData = getFormattedFilterList(searchParams, data, 'brend')
 				setBrendsList(resultData)
 			})
-		getTypes({ IsOnlyString: true })
+			.catch(() => toast.error('Ошибка при получении брендов'))
+		getTypes()
 			.unwrap()
 			.then(data => {
-				setTypesList(data as string[])
+				const resultData = getFormattedFilterList(searchParams, data, 'type')
+				setTypesList(resultData)
 			})
+			.catch(() => toast.error('Ошибка при получении типов ухода'))
 	}, [])
 
 	// Следим за фильтрами и пагинацией
@@ -199,7 +208,7 @@ const CatalogPage = () => {
 						<div className={cl.headerTopContent}>
 							<h1 className={cl.title}>{type}</h1>
 							{/*MINI*/}
-							<FilterTypesMini typesList={typesList} />
+							<FilterTypesMini typesList={typesList.map(el => el.title)} />
 							{/*MINI*/}
 							<div className={cl.sortListWrapper}>
 								<p className={cl.sortTitle}>Сортировка:</p>
@@ -254,11 +263,11 @@ const CatalogPage = () => {
 						<ul className={cl.typesList}>
 							{typesList.map(typeEl => (
 								<li
-									key={typeEl}
-									className={typeEl === type ? cl.active : ''}
-									onClick={() => onClickTypesListEl(typeEl)}
+									key={typeEl.id}
+									className={typeEl.title === type ? cl.active : ''}
+									onClick={() => onClickTypesListEl(typeEl.title)}
 								>
-									{typeEl}
+									{typeEl.title}
 								</li>
 							))}
 						</ul>

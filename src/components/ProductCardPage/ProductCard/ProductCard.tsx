@@ -1,6 +1,5 @@
 import { IProduct } from '@/types/product.interface'
-import { FC, useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { FC } from 'react'
 import ProductCardInfo from './ProductCardInfo/ProductCardInfo'
 import cl from './ProductCard.module.scss'
 

@@ -6,7 +6,12 @@ import {
 } from 'react'
 import { FieldError } from 'react-hook-form'
 import cl from './Input.module.scss'
-import searcIcon from '@/assets/Search/search.svg'
+import searchIcon from '@/assets/Search/search.svg'
+
+type IStringArgFunc = (value: string) => void
+type IEmptyArgFunc = () => void
+
+type IInputType = IStringArgFunc | IEmptyArgFunc
 
 interface IProps
 	extends DetailedHTMLProps<
@@ -14,18 +19,24 @@ interface IProps
 		HTMLInputElement
 	> {
 	srcImg?: string
-	searchEvent?: () => void
+	searchEvent?: IInputType
 	error?: FieldError
 	isAbsolute?: boolean
 }
 
 const Input = forwardRef<HTMLInputElement, IProps>(
-	({ srcImg = searcIcon, searchEvent, isAbsolute, error, ...props }, ref) => {
+	({ srcImg = searchIcon, searchEvent, isAbsolute, error, ...props }, ref) => {
 		const onKeyDownEnter = (event: KeyboardEvent<HTMLInputElement>) => {
 			if (!searchEvent) return
 
 			if (event.key === 'Enter') {
-				searchEvent()
+				if (ref && searchEvent.length > 0) {
+					searchEvent(
+						(ref as React.RefObject<HTMLInputElement>).current?.value || ''
+					)
+					return
+				}
+				;(searchEvent as IEmptyArgFunc)()
 			}
 		}
 
@@ -41,7 +52,18 @@ const Input = forwardRef<HTMLInputElement, IProps>(
 					{...props}
 				/>
 				{srcImg && (
-					<img src={srcImg} alt='' className={cl.icon} onClick={searchEvent} />
+					<img
+						src={srcImg}
+						alt=''
+						className={cl.icon}
+						onClick={() => {
+							if (ref && searchEvent)
+								searchEvent(
+									(ref as React.RefObject<HTMLInputElement>).current?.value ||
+										''
+								)
+						}}
+					/>
 				)}
 				{error && (
 					<p

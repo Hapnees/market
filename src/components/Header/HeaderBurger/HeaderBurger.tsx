@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import cl from './HeaderBurger.module.scss'
 import HeaderBurgerHomePage from './HeaderBurgerHomePage/HeaderBurgerHomePage'
 import HeaderBurgerCatalogPage from './HeaderBurgerCatalogPage/HeaderBurgerCatalogPage'
+import cl from './HeaderBurger.module.scss'
 
 const HeaderBurger = () => {
 	const { pathname } = useLocation()
@@ -23,7 +23,6 @@ const HeaderBurger = () => {
 			>
 				<span></span>
 			</div>
-
 			{isShowNav &&
 				(pathname === '/catalog' ? (
 					<HeaderBurgerCatalogPage closeBurger={closeBurger} />

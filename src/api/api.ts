@@ -1,12 +1,12 @@
 import { IGetProductsParams, IProduct } from '@/types/product.interface'
-import { IType } from '@/types/types.type.interface'
+import { IBrend, IProducer, IType } from '@/types/filters.type.interface'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const baseApi = createApi({
 	reducerPath: 'baseApi',
-	tagTypes: ['PRODUCTS', 'PRODUCTS-PROMO', 'PRODUCERS'],
+	tagTypes: ['PRODUCTS', 'PRODUCTS-PROMO', 'PRODUCERS', 'BRENDS', 'TYPES'],
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'https://market-backend-olive.vercel.app/',
+		baseUrl: 'https://market-backend-hapnees.onrender.com/',
 	}),
 	endpoints: build => ({
 		// Получаем список всех товаров
@@ -61,47 +61,30 @@ export const baseApi = createApi({
 		}),
 
 		// Получаем список производителей
-		getProducers: build.query<string[], void>({
+		getProducers: build.query<IProducer[], void>({
 			query: () => ({
 				url: 'producers',
 			}),
-			transformResponse: async response => {
-				const data = (await response) as { id: number; title: string }[]
-				return data.map(el => el.title)
-			},
 			providesTags: ['PRODUCERS'],
 		}),
 
 		// Получаем список брендов
-		getBrends: build.query<string[], void>({
+		getBrends: build.query<IBrend[], void>({
 			query: () => ({
 				url: 'brends',
 			}),
-			transformResponse: async (response: { id: number; title: string }[]) => {
-				const data = await response
-				return data.map(el => el.title)
-			},
+			providesTags: ['BRENDS'],
 		}),
 
 		// Получаем список типов ухода
-		getTypes: build.query<
-			IType[] | string[],
-			void | { title?: string; IsOnlyString?: boolean }
-		>({
-			query: params => ({
+		getTypes: build.query<IType[], void | string>({
+			query: title => ({
 				url: 'types',
 				params: {
-					title_like: params?.title,
-					_sort: 'id',
-					_order: 'asc',
+					title_like: title,
 				},
 			}),
-			transformResponse: async (response: IType[], _, args) => {
-				const data = await response
-
-				if (!args?.IsOnlyString) return await response
-				return data.map(el => el.title)
-			},
+			providesTags: ['TYPES'],
 		}),
 	}),
 })

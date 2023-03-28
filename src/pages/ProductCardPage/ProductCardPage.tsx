@@ -6,6 +6,7 @@ import BackButton from '@/components/UI/BackButton/BackButton'
 import { IBreadCrumbsEl } from '@/types/breadcrumbs.interface'
 import { useEffect } from 'react'
 import { useParams } from 'react-router'
+import { toast } from 'react-toastify'
 import cl from './ProductCardPage.module.scss'
 
 const ProductCardPage = () => {
@@ -16,7 +17,9 @@ const ProductCardPage = () => {
 	useEffect(() => {
 		if (!params.id) return
 
-		getProduct(+params.id!)
+		getProduct(+params.id!).then(() =>
+			toast.error('Ошибка при получении товара')
+		)
 	}, [params.id])
 
 	const breadCrumbsList: IBreadCrumbsEl[] = [

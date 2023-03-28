@@ -43,13 +43,21 @@ const AdminProductPage = () => {
 
 	const [imgUrl, setImgUrl] = useState('')
 
-	const { data: typesList, isLoading: isLoadingTypeList } = useGetTypesQuery({
-		IsOnlyString: true,
-	})
-	const { data: producersList, isLoading: isLoadingproducersList } =
-		useGetProducersQuery()
-	const { data: brendsList, isLoading: isLoadingBrendsList } =
-		useGetBrendsQuery()
+	const {
+		data: typesList,
+		isLoading: isLoadingTypeList,
+		isError: isErrorTypes,
+	} = useGetTypesQuery()
+	const {
+		data: producersList,
+		isLoading: isLoadingproducersList,
+		isError: isErrorProducers,
+	} = useGetProducersQuery()
+	const {
+		data: brendsList,
+		isLoading: isLoadingBrendsList,
+		isError: isErrorBrends,
+	} = useGetBrendsQuery()
 
 	const [selectedTypesList, setSelectedTypesList] = useState<string[]>([])
 	const [producer, setProducer] = useState<string>('')
@@ -103,17 +111,21 @@ const AdminProductPage = () => {
 		}
 
 		if (params.id) {
-			updateProduct(body).then(() => {
-				toast.success('Товар изменён')
-				navigate('/admin')
-			})
+			updateProduct(body)
+				.then(() => {
+					toast.success('Товар изменён')
+					navigate('/admin')
+				})
+				.catch(() => toast.error('Ошибка при измененеии товара'))
 			return
 		}
 
-		addProduct(body).then(() => {
-			toast.success('Товар добавлен!')
-			navigate('/admin')
-		})
+		addProduct(body)
+			.then(() => {
+				toast.success('Товар добавлен!')
+				navigate('/admin')
+			})
+			.catch(() => toast.error('Ошибка при добавлении товара'))
 	}
 
 	const imgSearchEvent = () => {
@@ -133,22 +145,31 @@ const AdminProductPage = () => {
 	useEffect(() => {
 		if (!params.id || isLoadingProduct) return
 
-		getProductById(+params.id).then(({ data }) => {
-			if (!data) return
-			setValue('title', data.title)
-			setValue('price', data.price)
-			setValue('description', data.description)
-			setValue('barcode', data.barcode)
-			setValue('amount', data.amount)
-			setValue('size', data.size)
-			setValue('typeSize', data.typeSize)
-			setProducer(data.producer)
-			setBrend(data.brend)
-			setSelectedTypesList(data.types)
-		})
+		getProductById(+params.id)
+			.then(({ data }) => {
+				if (!data) return
+				setValue('title', data.title)
+				setValue('price', data.price)
+				setValue('description', data.description)
+				setValue('barcode', data.barcode)
+				setValue('amount', data.amount)
+				setValue('size', data.size)
+				setValue('typeSize', data.typeSize)
+				setProducer(data.producer)
+				setBrend(data.brend)
+				setSelectedTypesList(data.types)
+			})
+			.catch(() => toast.error('Ошибка при получении товароа'))
 	}, [params, isLoadingProduct])
 
-	// TODO: написать лоадер
+	// Отслеживаем ошибки
+	useEffect(() => {
+		if (isErrorBrends) toast.error('Ошибка при получении брендов')
+		if (isErrorProducers) toast.error('Ошибка при получении производителей')
+		if (isErrorTypes) toast.error('Ошибка при получении типов ухода')
+	}, [isErrorBrends, isErrorProducers, isErrorTypes])
+
+	// Показываем лоадер при загрузке
 	if (
 		params.id &&
 		(isLoadingProduct ||
@@ -187,10 +208,13 @@ const AdminProductPage = () => {
 					)}
 					<FilterBlock
 						list={
-							(typesList as string[]).map(el => ({
-								title: el,
-								selected: product?.types.includes(el) ?? false,
-							})) || []
+							!typesList
+								? []
+								: typesList.map(el => ({
+										id: el.id,
+										title: el.title,
+										selected: product?.types.includes(el.title) ?? false,
+								  })) || []
 						}
 						title='Тип ухода'
 						callback={onChangeTypesCheckBox}
@@ -285,13 +309,13 @@ const AdminProductPage = () => {
 				<article className={cl.thirdColumn}>
 					<Radio
 						title='Производитель'
-						listElements={producersList || []}
+						listElements={producersList?.map(el => el.title) || []}
 						callback={onChangeProducer}
 						defaultValue={product?.producer}
 					/>
 					<Radio
 						title='Бренд'
-						listElements={brendsList || []}
+						listElements={brendsList?.map(el => el.title) || []}
 						callback={onChangeBrend}
 						defaultValue={product?.brend}
 					/>

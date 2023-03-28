@@ -20,7 +20,6 @@ const HeaderTopContent = () => {
 
 	const onClickAdminModeBtn = () => {
 		if (!isAdminMode) {
-			toast.info('Для перехода в админку кликните ещё раз на кнопку админ-мод')
 			toast.success('Админ-мод включен')
 			toggleAdminMode()
 		} else {
@@ -67,7 +66,6 @@ const HeaderTopContent = () => {
 					</Button>
 					{isShowAdminList && (
 						<ul className={cl.adminList}>
-							<li>Подробнее</li>
 							<li onClick={onClickAdminPage}>Админка</li>
 							<li onClick={onClickAdminUserMode}>Режим пользователя</li>
 						</ul>
@@ -80,6 +78,15 @@ const HeaderTopContent = () => {
 			</nav>
 
 			<article className={cl.miniHeader}>
+				<div className={cl.adminButton} onClick={onClickAdminModeBtn}>
+					А
+				</div>
+				{isShowAdminList && (
+					<ul className={`${cl.adminList} ${cl.adaptiveAdminList}`}>
+						<li onClick={onClickAdminPage}>Админка</li>
+						<li onClick={onClickAdminUserMode}>Режим пользователя</li>
+					</ul>
+				)}
 				<HeaderBurger />
 
 				<img src={logoIcon} alt='' className={cl.logo} />

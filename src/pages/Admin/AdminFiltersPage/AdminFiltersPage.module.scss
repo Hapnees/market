@@ -6,12 +6,61 @@
 }
 
 .list {
-	display: flex;
-	gap: 100px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	column-gap: 100px;
+	row-gap: 80px;
+
+	@media (max-width: 1030px) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@media (max-width: 668px) {
+		grid-template-columns: repeat(1, 1fr);
+	}
 }
 
 .buttons {
 	display: flex;
-	align-items: center;
+	align-items: stretch;
 	gap: 10px;
+}
+
+.newTypesList {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	font-size: 14px;
+
+	margin-top: 20px;
+
+	> li {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.minusButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: rgba($color: $orange, $alpha: 0.7);
+	border-radius: 100%;
+
+	cursor: pointer;
+
+	padding: 15px 10px;
+
+	&::after {
+		content: '';
+		width: 15px;
+		height: 3px;
+		background-color: #fff;
+	}
+
+	&:hover {
+		background-color: $orange;
+	}
 }

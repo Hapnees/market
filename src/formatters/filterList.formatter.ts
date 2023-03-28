@@ -1,14 +1,16 @@
+import { IBrend, IProducer, IType } from '@/types/filters.type.interface'
 import { IFilterListEl } from '@/types/product.interface'
 
 // Сравниваем полученную дату с параметрами из URL
 // При совпадении ставим 'selected' в true
 const getFormattedFilterList = (
 	searchParams: URLSearchParams,
-	data: string[],
+	data: (IProducer | IBrend | IType)[],
 	paramTitle: string
 ) => {
 	let result: IFilterListEl[] = data.map(el => ({
-		title: el,
+		id: el.id,
+		title: el.title,
 		selected: false,
 	}))
 

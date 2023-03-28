@@ -1,20 +1,20 @@
 .wrapper {
 	position: absolute;
 
-	top: 43px;
+	top: 65px;
 	right: 0px;
 
 	z-index: 999;
 	background-color: #fff;
 
 	animation: show 0.3s;
+	box-shadow: 0 10px 10px 5px #00000048;
 
-	padding-top: 20px;
 	padding-bottom: 32px;
 
 	@media (max-width: 540px) {
 		width: 100%;
-		top: 113px;
+		top: 104px;
 	}
 }
 

@@ -32,6 +32,7 @@ export interface IGetProductsParams {
 }
 
 export interface IFilterListEl {
+	id: number
 	title: string
 	selected: boolean
 }

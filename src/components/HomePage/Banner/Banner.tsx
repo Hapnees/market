@@ -8,7 +8,7 @@ const Banner = () => {
 	const navigate = useNavigate()
 
 	const onClickCatalogBtn = () => {
-		navigate('/catalog')
+		navigate({ pathname: '/catalog', search: 'type=Косметика и гигиена' })
 	}
 
 	return (

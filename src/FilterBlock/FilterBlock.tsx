@@ -3,9 +3,11 @@ import TitleWithArrow from '@/components/UI/TitleWithArrow/TitleWithArrow'
 import useSetUrlParams from '@/hooks/useSetSearchParams'
 import { IFilterListEl } from '@/types/product.interface'
 import {
+	Dispatch,
 	FC,
 	HtmlHTMLAttributes,
 	memo,
+	SetStateAction,
 	useEffect,
 	useRef,
 	useState,
@@ -16,11 +18,12 @@ import getFormattedFilterList from '@/formatters/filterList.formatter'
 
 interface IProps extends HtmlHTMLAttributes<HTMLDivElement> {
 	title: string
-	list: IFilterListEl[] | string[]
+	list: IFilterListEl[]
 	isShowBorder?: boolean
 	param?: string
 	callback?: (value: string) => unknown
 	isRadioList?: boolean
+	setSelectedIdList?: Dispatch<SetStateAction<number[]>>
 }
 
 const FilterBlock: FC<IProps> = ({
@@ -30,6 +33,7 @@ const FilterBlock: FC<IProps> = ({
 	param,
 	callback,
 	isRadioList,
+	setSelectedIdList,
 	...props
 }) => {
 	const isGotList = useRef<boolean>(false)
@@ -43,6 +47,16 @@ const FilterBlock: FC<IProps> = ({
 
 	// Сетаем параметр в URl при его изменении
 	const onChangeCheckbox = (value: string) => {
+		if (!param) {
+			const copy = [...currentList]
+			const current = copy.find(el => el.title === value)
+			if (current) current.selected = !current.selected
+			setCurrentList(copy)
+
+			if (setSelectedIdList)
+				setSelectedIdList(copy.filter(el => el.selected).map(el => el.id))
+		}
+
 		if (param) {
 			if (isRadioList) {
 				searchParams.set(param, value)
@@ -70,19 +84,11 @@ const FilterBlock: FC<IProps> = ({
 			setCurrentList(list)
 			setIsShowAll(false)
 		} else {
-			if (isRadioList) {
-				setCurrentList(
-					(list as string[]).filter(el =>
-						el.toLowerCase().includes(search.current!.value.toLowerCase())
-					)
+			setCurrentList(
+				list.filter(el =>
+					el.title.toLowerCase().includes(search.current!.value.toLowerCase())
 				)
-			} else {
-				setCurrentList(
-					(list as IFilterListEl[]).filter(el =>
-						el.title.toLowerCase().includes(search.current!.value.toLowerCase())
-					)
-				)
-			}
+			)
 			setIsShowAll(true)
 		}
 	}
@@ -100,11 +106,7 @@ const FilterBlock: FC<IProps> = ({
 
 		const newList = isRadioList
 			? list
-			: getFormattedFilterList(
-					searchParams,
-					(list as IFilterListEl[]).map(el => el.title),
-					param
-			  )
+			: getFormattedFilterList(searchParams, list, param)
 
 		setCurrentList(newList)
 	}, [searchParams])
@@ -125,36 +127,32 @@ const FilterBlock: FC<IProps> = ({
 					<div className={isShowBorder ? `${cl.listWrapper}` : ''}>
 						<ul className={cl.list}>
 							{isRadioList && param
-								? (
-										(isShowAll
-											? currentList
-											: currentList?.slice(0, 4)) as string[]
-								  )?.map(element => (
-										<li key={element}>
-											<input
-												type='radio'
-												id={element}
-												checked={element === searchParams.get(param)}
-												onChange={event => onChangeCheckbox(event.target.id)}
-											/>
-											<label htmlFor={element}>{element}</label>
-										</li>
-								  ))
-								: (
-										(isShowAll
-											? currentList
-											: currentList?.slice(0, 4)) as IFilterListEl[]
-								  )?.map(element => (
-										<li key={element.title}>
-											<input
-												type='checkbox'
-												id={element.title}
-												checked={element.selected}
-												onChange={event => onChangeCheckbox(event.target.id)}
-											/>
-											<label htmlFor={element.title}>{element.title}</label>
-										</li>
-								  ))}
+								? (isShowAll ? currentList : currentList?.slice(0, 4))?.map(
+										element => (
+											<li key={element.id.toString()}>
+												<input
+													type='radio'
+													id={element.id.toString()}
+													checked={element.title === searchParams.get(param)}
+													onChange={event => onChangeCheckbox(event.target.id)}
+												/>
+												<label htmlFor={element.title}>{element.title}</label>
+											</li>
+										)
+								  )
+								: (isShowAll ? currentList : currentList?.slice(0, 4))?.map(
+										element => (
+											<li key={element.title}>
+												<input
+													type='checkbox'
+													id={element.title}
+													checked={element.selected}
+													onChange={event => onChangeCheckbox(event.target.id)}
+												/>
+												<label htmlFor={element.title}>{element.title}</label>
+											</li>
+										)
+								  )}
 						</ul>
 
 						<TitleWithArrow

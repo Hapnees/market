@@ -6,14 +6,20 @@ import pointerIcon from '@/assets/Header/pointer.svg'
 import mailIcon from '@/assets/Header/mail.svg'
 import Button from '@/components/UI/Button/Button'
 import priceListIcon from '@/assets/Header/priceList.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const HeaderBurgerHomePage = () => {
+	const navigate = useNavigate()
+
+	const onClickCatalogBtn = () => {
+		navigate({ pathname: '/catalog', search: 'type=Косметика и гигиена' })
+	}
+
 	return (
 		<article className={cl.wrapper}>
 			<div className={cl.content}>
 				<div className={cl.controls}>
-					<div>
+					<div onClick={onClickCatalogBtn}>
 						<img src={catalogIcon} alt='' />
 						<p>Каталог</p>
 					</div>
