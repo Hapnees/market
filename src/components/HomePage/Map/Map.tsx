@@ -1,7 +1,7 @@
 import cl from './Map.module.scss'
 import pointerIcon from '@/assets/HomePage/Map/pointer.svg'
 import mapImage from '@/assets/HomePage/map.png'
-import paperImage from '@/assets/HomePage/paper.svg'
+import paperImage from '@/assets/HomePage/Map/paper.svg'
 
 const Map = () => {
 	return (
@@ -38,7 +38,7 @@ const Map = () => {
 					</li>
 				</ul>
 			</div>
-			<img src={mapImage} alt='' />
+			<img src={mapImage} alt='' className={cl.mapImage} />
 		</article>
 	)
 }

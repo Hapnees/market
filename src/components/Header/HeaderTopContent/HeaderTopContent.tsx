@@ -7,8 +7,12 @@ import { toast } from 'react-toastify'
 import { useState } from 'react'
 import pointer from '@/assets/Header/pointer.svg'
 import mail from '@/assets/Header/mail.svg'
+import HeaderBurger from '../HeaderBurger/HeaderBurger'
+import logoIcon from '@/assets/Header/logo.svg'
+import Cart from '@/components/UI/Cart/Cart'
 
 const HeaderTopContent = () => {
+	const { products } = useAppSelector(state => state.cart)
 	const navigate = useNavigate()
 	const { toggleAdminMode } = useActions()
 	const { isAdminMode } = useAppSelector(state => state.adminMode)
@@ -74,6 +78,16 @@ const HeaderTopContent = () => {
 				<Link to='/'>Возврат</Link>
 				<Link to='/'>Контакты</Link>
 			</nav>
+
+			<article className={cl.miniHeader}>
+				<HeaderBurger />
+
+				<img src={logoIcon} alt='' className={cl.logo} />
+
+				<div>
+					<Cart numProducts={products.length} />
+				</div>
+			</article>
 		</section>
 	)
 }

@@ -11,4 +11,8 @@
 	background-color: rgba($color: #000, $alpha: 0.5);
 
 	z-index: 999;
+
+	@media (max-width: 750px) {
+		align-items: start;
+	}
 }

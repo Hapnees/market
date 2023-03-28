@@ -1,35 +1,103 @@
 .footer {
+	display: flex;
+	justify-content: center;
+
 	background-color: $grayBlue;
 	color: #fff;
 	line-height: 150%;
-	padding: 71px $mainPadding 116px $mainPadding;
+
+	@include adaptive-size(padding-top, 71, 15);
+	@include adaptive-size(padding-right, 277, 15);
+	@include adaptive-size(padding-left, 277, 15);
+	@include adaptive-size(padding-bottom, 116, 15);
 }
 
 .list {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	column-gap: 60px;
+	row-gap: 30px;
 
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 150%;
 
-	> li {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
+	@media (max-width: 1122px) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	@media (max-width: 738px) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@media (max-width: 638px) {
+		grid-template-columns: none;
+		column-gap: 0px;
+		grid-template-areas:
+			'a a'
+			'b c'
+			'd e';
+
+		> li {
+			&:nth-child(1) {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				grid-area: a;
+			}
+
+			&:nth-child(2) {
+				grid-area: b;
+				padding: 0 15px;
+			}
+
+			&:nth-child(3) {
+				grid-area: c;
+				padding: 0 15px;
+			}
+
+			&:nth-child(4) {
+				grid-area: e;
+				padding: 0 15px;
+			}
+
+			&:nth-child(5) {
+				grid-area: d;
+				padding: 0 15px;
+			}
+		}
 	}
 }
 
-.logo {
+.logoWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+
+	padding: 0 15px;
+
 	margin-bottom: 15px;
+}
+
+.logo {
+	display: block;
+	@include adaptive-size(width, 156, 97);
+	@include adaptive-size(height, 66, 41);
+
+	margin-bottom: 15px;
+
+	@media (max-width: 639px) {
+		margin-bottom: 0;
+	}
 }
 
 .text {
 	font-weight: 400;
-	font-size: 16px;
+	@include adaptive-font(16, 12);
 	width: 320px;
 
+	padding: 0 15px;
 	margin-bottom: 45px;
 }
 
@@ -51,6 +119,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+	@include adaptive-font(14, 12);
 
 	> li {
 		cursor: pointer;
@@ -109,4 +178,31 @@
 .cardIcons {
 	display: flex;
 	gap: 5.06px;
+}
+
+.adaptiveButton {
+	display: none;
+
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 15px;
+	padding: 12.5px 29.5px;
+
+	@media (max-width: 639px) {
+		display: flex;
+	}
+}
+
+.adaptivePriceListButton {
+	margin-bottom: 20px;
+
+	@media (max-width: 639px) {
+		display: none;
+	}
+}
+
+.priceListTitle {
+	@media (max-width: 639px) {
+		display: none;
+	}
 }

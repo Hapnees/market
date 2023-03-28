@@ -13,13 +13,7 @@ const ProductCard: FC<IProps> = ({ product }) => {
 		<section className={cl.wrapper}>
 			{product && (
 				<>
-					<img
-						src={product.img}
-						alt=''
-						width={664}
-						height={471}
-						className={cl.img}
-					/>
+					<img src={product.img} alt='' className={cl.img} />
 
 					<ProductCardInfo product={product} />
 				</>

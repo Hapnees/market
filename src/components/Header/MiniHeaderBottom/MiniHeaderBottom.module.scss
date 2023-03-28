@@ -1,0 +1,35 @@
+.wrapper {
+	display: none;
+
+	color: $grayBlue;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 15px;
+
+	> div {
+		display: flex;
+		gap: 6px;
+
+		cursor: pointer;
+		border-bottom: 1px solid rgba($color: $grayBlue, $alpha: 0.1);
+
+		padding: 13px 45px;
+
+		@media (max-width: 321px) {
+			&:not(:last-child) {
+				border-right: 1px dashed rgba($color: $grayBlue, $alpha: 0.1);
+			}
+		}
+	}
+
+	@media (max-width: 321px) {
+		justify-content: initial !important;
+	}
+
+	@media (max-width: 539px) {
+		display: flex;
+		justify-content: space-between;
+		//@include adaptive-padding(0, 0, 80, 320);
+		padding: 0 calc(80 * ((100vw - 320px) / (1920 - 320)));
+	}
+}

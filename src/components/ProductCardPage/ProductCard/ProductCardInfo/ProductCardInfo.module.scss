@@ -1,4 +1,7 @@
 .wrapper {
+	display: flex;
+	flex-direction: column;
+
 	margin-top: 50px;
 }
 
@@ -10,9 +13,10 @@
 }
 
 .title {
-	font-size: 30px;
+	@include adaptive-font(30, 16);
 	line-height: 150%;
 
+	@include adaptive-size(width, 800, 290);
 	margin-bottom: 11px;
 
 	> span {

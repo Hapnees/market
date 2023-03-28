@@ -1,11 +1,12 @@
 import { IGetProductsParams, IProduct } from '@/types/product.interface'
+import { IType } from '@/types/types.type.interface'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const baseApi = createApi({
 	reducerPath: 'baseApi',
-	tagTypes: ['PRODUCTS', 'PRODUCTS-PROMO'],
+	tagTypes: ['PRODUCTS', 'PRODUCTS-PROMO', 'PRODUCERS'],
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'http://localhost:3001',
+		baseUrl: 'https://market-backend-olive.vercel.app/',
 	}),
 	endpoints: build => ({
 		// Получаем список всех товаров
@@ -16,12 +17,13 @@ export const baseApi = createApi({
 			query: params => ({
 				url: 'products',
 				params: {
-					_page: params.page,
+					_page: params.page || 1,
 					_limit: params.limit,
 					_sort: params.sort,
 					_order: params.order,
 					types_like: params.types,
-					brends_like: params.brends,
+					producer_like: params.producers,
+					brend_like: params.brends,
 					price_gte: params.minPrice,
 					price_lte: params.maxPrice,
 				},
@@ -52,8 +54,8 @@ export const baseApi = createApi({
 				url: 'products',
 				params: { id },
 			}),
-			transformResponse: async response => {
-				const data = (await response) as IProduct[]
+			transformResponse: async (response: IProduct[]) => {
+				const data = await response
 				return data[0]
 			},
 		}),
@@ -63,6 +65,11 @@ export const baseApi = createApi({
 			query: () => ({
 				url: 'producers',
 			}),
+			transformResponse: async response => {
+				const data = (await response) as { id: number; title: string }[]
+				return data.map(el => el.title)
+			},
+			providesTags: ['PRODUCERS'],
 		}),
 
 		// Получаем список брендов
@@ -70,13 +77,31 @@ export const baseApi = createApi({
 			query: () => ({
 				url: 'brends',
 			}),
+			transformResponse: async (response: { id: number; title: string }[]) => {
+				const data = await response
+				return data.map(el => el.title)
+			},
 		}),
 
 		// Получаем список типов ухода
-		getTypes: build.query<string[], void>({
-			query: () => ({
+		getTypes: build.query<
+			IType[] | string[],
+			void | { title?: string; IsOnlyString?: boolean }
+		>({
+			query: params => ({
 				url: 'types',
+				params: {
+					title_like: params?.title,
+					_sort: 'id',
+					_order: 'asc',
+				},
 			}),
+			transformResponse: async (response: IType[], _, args) => {
+				const data = await response
+
+				if (!args?.IsOnlyString) return await response
+				return data.map(el => el.title)
+			},
 		}),
 	}),
 })

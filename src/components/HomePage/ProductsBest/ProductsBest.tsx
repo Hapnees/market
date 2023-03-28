@@ -13,6 +13,7 @@ import img10 from '@/assets/ProductsBest/img10.png'
 
 const ProductsBest = () => {
 	const imgList = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10]
+
 	return (
 		<article className={cl.wrapper}>
 			<p className='title' style={{ marginBottom: '15px' }}>

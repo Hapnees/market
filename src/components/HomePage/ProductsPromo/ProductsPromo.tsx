@@ -1,9 +1,10 @@
 import { useGetProductsPromoQuery } from '@/api/api'
+import Loader from '@/components/Loader/Loader'
 import ProductGrid from '../../ProductGrid/ProductGrid'
 import cl from './ProductsPromo.module.scss'
 
 const ProductsPromo = () => {
-	const { data: products } = useGetProductsPromoQuery()
+	const { data: products, isLoading } = useGetProductsPromoQuery()
 
 	return (
 		<article className={cl.wrapper}>
@@ -11,7 +12,11 @@ const ProductsPromo = () => {
 				<span>Акционные</span> товары
 			</p>
 
-			<ProductGrid products={products || []} style={{ marginTop: '50px' }} />
+			{isLoading ? (
+				<Loader />
+			) : (
+				<ProductGrid products={products || []} className={cl.adaptiveGrid} />
+			)}
 		</article>
 	)
 }

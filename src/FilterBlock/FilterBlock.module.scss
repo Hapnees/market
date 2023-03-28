@@ -6,12 +6,12 @@
 	margin-bottom: 20px;
 }
 
-.producersListWrapper {
+.listWrapper {
 	border-bottom: 1px dashed rgba($color: $grayBlue, $alpha: 0.3);
 	padding-bottom: 5px;
 }
 
-.producersList {
+.list {
 	display: flex;
 	flex-direction: column;
 	gap: 5px;

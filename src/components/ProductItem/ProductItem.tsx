@@ -68,7 +68,7 @@ const ProductItem: FC<IProps> = ({ product }) => {
 							className={`${cl.adminArrow} ${cl.adminTrash}`}
 							onClick={() => onClickTrash(product.id)}
 						/>
-						<Link to={`admin/product/${product.id}`}>
+						<Link to={`/admin/product/${product.id}`}>
 							<img
 								src={pencilIcon}
 								alt=''

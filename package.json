@@ -8,7 +8,6 @@
 		"dev": "vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
-		"server": "json-server -w server/db.json -p 3001 -s /server/static",
 		"deploy": "gh-pages -d dist",
 		"predeploy": "yarn build"
 	},

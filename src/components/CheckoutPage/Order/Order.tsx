@@ -13,10 +13,9 @@ interface IProps {
 const Order: FC<IProps> = ({ products }) => {
 	const navigate = useNavigate()
 
-	const totalPrice = products.reduce(
-		(accum, item) => accum + item.price * item.quantity,
-		0
-	)
+	const totalPrice = products
+		.reduce((accum, item) => accum + item.price * item.quantity, 0)
+		.toFixed(2)
 
 	const onClickEditOrder = () => {
 		navigate('/cart')

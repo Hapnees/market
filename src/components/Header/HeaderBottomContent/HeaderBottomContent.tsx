@@ -12,7 +12,7 @@ const HeaderBottomContent = () => {
 	const navigate = useNavigate()
 
 	const onClickCatalogBtn = () => {
-		navigate('/catalog')
+		navigate({ pathname: '/catalog', search: 'type=Косметика и гигиена' })
 	}
 
 	const onClickLogo = () => {
@@ -24,15 +24,17 @@ const HeaderBottomContent = () => {
 			<article className={cl.content}>
 				<img src={logo} alt='' className={cl.logo} onClick={onClickLogo} />
 
-				<Button
-					srcImg={square}
-					onClick={onClickCatalogBtn}
-					style={{ marginRight: '15px' }}
-				>
-					Каталог
-				</Button>
-				{/*SEARCH*/}
-				<Input />
+				<div className={cl.controls}>
+					<Button
+						srcImg={square}
+						onClick={onClickCatalogBtn}
+						style={{ marginRight: '15px' }}
+					>
+						Каталог
+					</Button>
+					{/*SEARCH*/}
+					<Input />
+				</div>
 
 				<HeaderCallBlock />
 

@@ -1,41 +1,65 @@
 .wrapper {
 	position: relative;
 
-	width: 1366px;
-	height: 600px;
-	margin: 0 $mainPadding;
+	display: flex;
+	flex-direction: column;
 
+	@include adaptive-size(width, 1366, 290);
+	object-fit: cover;
+	height: 600px;
+
+	@include adaptive-margin(0, 277, 15, 320);
 	margin-bottom: 100px;
 }
 
 .info {
 	position: absolute;
+
 	top: 30px;
 	left: 30px;
 
 	color: $grayBlue;
 
+	@include adaptive-size(width, 735, 270);
+	@include adaptive-size(height, 424, 319);
+
+	//width: 735px;
+	//height: 424px;
+
 	border-radius: 8px;
 	background: rgba(255, 255, 255, 0.3);
 	backdrop-filter: blur(15px);
 
-	padding: 60px 94px 70px 50px;
+	@include adaptive-size(padding-top, 60, 25);
+	@include adaptive-size(padding-right, 94, 15);
+	@include adaptive-size(padding-bottom, 70, 25);
+	@include adaptive-size(padding-left, 50, 15);
+	//padding: 60px 94px 70px 50px;
+
+	@media (max-width: 960px) {
+		align-self: center;
+		left: auto;
+	}
 }
 
 .title {
 	font-weight: 500;
-	font-size: 40px;
+	@include adaptive-font(40, 20);
+	//font-size: 40px;
 	line-height: 120%;
 
-	margin-bottom: 15px;
+	@include adaptive-size(margin-bottom, 15, 5);
+	//margin-bottom: 15px;
 }
 
 .subtitle {
 	font-weight: 300;
-	font-size: 20px;
+	@include adaptive-font(20, 12);
+	//font-size: 20px;
 	line-height: 120%;
 
-	margin-bottom: 25px;
+	@include adaptive-size(margin-bottom, 25, 15);
+	//margin-bottom: 25px;
 }
 
 .list {
@@ -48,8 +72,14 @@
 		&:nth-child(1),
 		&:nth-child(2) {
 			border-bottom: 1px dashed rgba($color: $grayBlue, $alpha: 0.2);
-			padding-bottom: 25px;
+			@include adaptive-size(padding-bottom, 25, 10);
+			//padding-bottom: 25px;
 		}
+	}
+
+	@media (max-width: 960px) {
+		grid-template-columns: repeat(1, 1fr);
+		align-self: center;
 	}
 }
 
@@ -59,7 +89,8 @@
 	font-size: 14px;
 	line-height: 130.02%;
 
-	margin-bottom: 10px;
+	@include adaptive-size(margin-bottom, 10, 5);
+	//margin-bottom: 10px;
 }
 
 .listElSubtitle {
@@ -70,17 +101,35 @@
 	> p {
 		max-width: 237px;
 		font-weight: 400;
-		font-size: 14px;
+		@include adaptive-font(14, 12);
+		//font-size: 14px;
 		line-height: 130.02%;
+	}
+
+	@media (max-width: 960px) {
+		> img {
+			display: none;
+		}
 	}
 }
 
 .listElMove {
 	margin-left: 30px;
+
+	@media (max-width: 960px) {
+		margin-left: 0px;
+	}
 }
 
 .listElSubtitleInnerWrapper {
 	display: flex;
 	flex-direction: column;
 	gap: 3px;
+
+	@include adaptive-font(14, 12);
+}
+
+.mapImage {
+	width: 100%;
+	height: 100%;
 }

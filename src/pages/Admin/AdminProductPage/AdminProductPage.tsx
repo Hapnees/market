@@ -20,13 +20,14 @@ import { useNavigate, useParams } from 'react-router'
 import { toast } from 'react-toastify'
 import cl from './AdminProductPage.module.scss'
 import arrowIcon from '@/assets/arrow.svg'
+import Loader from '@/components/Loader/Loader'
 
 const AdminProductPage = () => {
 	const navigate = useNavigate()
 	const params = useParams()
 	const btnText = params.id ? 'Изменить товар' : 'Добавить товар'
 
-	const [getProductById, { data: product, isLoading }] =
+	const [getProductById, { data: product, isLoading: isLoadingProduct }] =
 		useLazyGetProductByIdQuery()
 	const [addProduct] = useAddProductMutation()
 	const [updateProduct] = useUpdateProductMutation()
@@ -40,12 +41,15 @@ const AdminProductPage = () => {
 		getValues,
 	} = useForm<IProduct>({ mode: 'onBlur' })
 
-	// TODO: загрузить картинку
 	const [imgUrl, setImgUrl] = useState('')
 
-	const { data: typesList } = useGetTypesQuery()
-	const { data: producersList } = useGetProducersQuery()
-	const { data: brendsList } = useGetBrendsQuery()
+	const { data: typesList, isLoading: isLoadingTypeList } = useGetTypesQuery({
+		IsOnlyString: true,
+	})
+	const { data: producersList, isLoading: isLoadingproducersList } =
+		useGetProducersQuery()
+	const { data: brendsList, isLoading: isLoadingBrendsList } =
+		useGetBrendsQuery()
 
 	const [selectedTypesList, setSelectedTypesList] = useState<string[]>([])
 	const [producer, setProducer] = useState<string>('')
@@ -127,7 +131,7 @@ const AdminProductPage = () => {
 
 	// Получаем товар, если указан параметр
 	useEffect(() => {
-		if (!params.id || isLoading) return
+		if (!params.id || isLoadingProduct) return
 
 		getProductById(+params.id).then(({ data }) => {
 			if (!data) return
@@ -142,11 +146,17 @@ const AdminProductPage = () => {
 			setBrend(data.brend)
 			setSelectedTypesList(data.types)
 		})
-	}, [params, isLoading])
+	}, [params, isLoadingProduct])
 
 	// TODO: написать лоадер
-	if (params.id && isLoading) {
-		return <h1>Загрузка</h1>
+	if (
+		params.id &&
+		(isLoadingProduct ||
+			isLoadingBrendsList ||
+			isLoadingTypeList ||
+			isLoadingproducersList)
+	) {
+		return <Loader />
 	}
 
 	return (
@@ -177,7 +187,7 @@ const AdminProductPage = () => {
 					)}
 					<FilterBlock
 						list={
-							typesList?.map(el => ({
+							(typesList as string[]).map(el => ({
 								title: el,
 								selected: product?.types.includes(el) ?? false,
 							})) || []

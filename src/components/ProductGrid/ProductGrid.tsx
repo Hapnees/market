@@ -12,11 +12,12 @@ const ProductGrid: FC<IProps> = ({
 	products,
 	columns = 4,
 	style,
+	className,
 	...props
 }) => {
 	return (
 		<ul
-			className={cl.list}
+			className={`${cl.list} ${className}`}
 			style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, ...style }}
 			{...props}
 		>

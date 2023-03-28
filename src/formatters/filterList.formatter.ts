@@ -1,4 +1,4 @@
-import { IFilterList } from '@/types/product.interface'
+import { IFilterListEl } from '@/types/product.interface'
 
 // Сравниваем полученную дату с параметрами из URL
 // При совпадении ставим 'selected' в true
@@ -7,7 +7,7 @@ const getFormattedFilterList = (
 	data: string[],
 	paramTitle: string
 ) => {
-	let result: IFilterList[] = data.map(el => ({
+	let result: IFilterListEl[] = data.map(el => ({
 		title: el,
 		selected: false,
 	}))

@@ -5,12 +5,25 @@
 	align-items: center;
 	gap: 30px;
 
-	padding: 30px $mainPadding;
+	@include adaptive-padding(30, 277, 15);
+	//padding: 30px $mainPadding;
 }
 
 .form {
-	display: flex;
-	gap: 30px;
+	//display: flex;
+	//gap: 30px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	column-gap: 30px;
+
+	@media (max-width: 1006px) {
+		grid-template-columns: repeat(2, 1fr);
+		row-gap: 30px;
+	}
+
+	@media (max-width: 690px) {
+		grid-template-columns: repeat(1, 1fr);
+	}
 }
 
 // FIRST COLUMN
@@ -75,6 +88,11 @@
 .firstColumnInputs {
 	display: flex;
 	gap: 5px;
+
+	@media (max-width: 380px) {
+		flex-direction: column;
+		gap: 20px;
+	}
 }
 
 // SECOND COLUMN

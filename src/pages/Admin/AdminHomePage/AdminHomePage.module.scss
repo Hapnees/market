@@ -3,7 +3,8 @@
 	align-items: center;
 	justify-content: center;
 
-	padding: 30px $mainPadding;
+	@include adaptive-padding(30, 277, 15);
+	//padding: 30px $mainPadding;
 }
 
 .container {
@@ -15,7 +16,7 @@
 .title {
 	text-align: center;
 
-	font-size: 30px;
+	@include adaptive-font(30, 26);
 	font-weight: 500;
 	letter-spacing: 0.5px;
 
@@ -39,7 +40,12 @@
 		> a {
 			width: 100%;
 			text-align: center;
-			padding: 20px 120px;
+
+			//padding: 0 120px;
+			@include adaptive-size(padding-top, 20, 10);
+			@include adaptive-size(padding-bottom, 20, 10);
+			@include adaptive-size(padding-right, 120, 80);
+			@include adaptive-size(padding-left, 120, 80);
 			color: #000;
 		}
 	}

@@ -3,12 +3,11 @@ import PriceController from '@/components/CatalogPage/PriceController/PriceContr
 import Pagination from '@/components/Pagination/Pagination'
 import ProductGrid from '@/components/ProductGrid/ProductGrid'
 import Button from '@/components/UI/Button/Button'
-import { IFilterList, IGetProductsParams } from '@/types/product.interface'
+import { IFilterListEl, IGetProductsParams } from '@/types/product.interface'
 import getFormattedFilterList from '@/formatters/filterList.formatter'
 import { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import cl from './CatalogPage.module.scss'
-import useSetUrlParams from '@/hooks/useSetSearchParams'
 import {
 	useLazyGetBrendsQuery,
 	useLazyGetProducersQuery,
@@ -16,25 +15,34 @@ import {
 	useLazyGetTypesQuery,
 } from '@/api/api'
 import trashIcon from '@/assets/CatalogPage/trash.svg'
+import BreadCrumbs from '@/components/BreadCrumbs/BreadCrumbs'
+import { IBreadCrumbsEl } from '@/types/breadcrumbs.interface'
+import FilterTypesMini from '@/components/FilterTypesMini/FilterTypesMini'
+import BackButton from '@/components/UI/BackButton/BackButton'
+import Loader from '@/components/Loader/Loader'
 
 const limit = 15
 
 const CatalogPage = () => {
-	const [getProducts, { data }] = useLazyGetProductsQuery()
-	const [getProducers] = useLazyGetProducersQuery()
-	const [getBrends] = useLazyGetBrendsQuery()
-	const [getTypes] = useLazyGetTypesQuery()
+	const [searchParams, setSearchParams] = useSearchParams()
+	const type = searchParams.get('type') || ''
 
-	const [producersList, setProducersList] = useState<IFilterList[]>([])
-	const [brendsList, setBrendsList] = useState<IFilterList[]>([])
-	const [typesList, setTypesList] = useState<IFilterList[]>([])
+	const navigate = useNavigate()
+	const breadCrumbsList: IBreadCrumbsEl[] = [{ title: type, href: '/catalog' }]
+
+	const [getProducts, { data: productsData, isLoading: isLoadingProducts }] =
+		useLazyGetProductsQuery()
+	const [getProducers, { isLoading: isLoadingProducers }] =
+		useLazyGetProducersQuery()
+	const [getBrends, { isLoading: isLoadingBrends }] = useLazyGetBrendsQuery()
+	const [getTypes, { isLoading: isLoadingTypes }] = useLazyGetTypesQuery()
+
+	const [producersList, setProducersList] = useState<IFilterListEl[]>([])
+	const [brendsList, setBrendsList] = useState<IFilterListEl[]>([])
+	const [typesList, setTypesList] = useState<string[]>([])
 
 	const [order, setOrder] = useState<string | undefined>(undefined)
 	const [sort, setSort] = useState<string | undefined>(undefined)
-
-	const [searchParams, setSearchParams] = useSearchParams()
-
-	const setUrlParams = useSetUrlParams(searchParams, setSearchParams)
 
 	// Минимальная и максимальная цены
 	// Берём их из URL, если они там указаны
@@ -52,7 +60,7 @@ const CatalogPage = () => {
 	const orderParam = searchParams.get('order')
 	const producersParam = searchParams.get('producer') || ''
 	const brendsParam = searchParams.get('brend') || ''
-	const typesParam = searchParams.get('type') || ''
+	const typeParam = searchParams.get('type') || ''
 
 	// Для пагинации
 	// Сначала пытаемся достать номер страницы из URL, если его там нет, то ставим значение 1
@@ -65,7 +73,6 @@ const CatalogPage = () => {
 	// При изменении минимальной цены
 	const onChangeMinPrice = (value: string) => {
 		searchParams.set('minPrice', value)
-		//setSearchParams(searchParams)
 		setMinPrice(+value)
 	}
 
@@ -88,7 +95,7 @@ const CatalogPage = () => {
 		if (limit > 0) params.limit = limit
 		if (brendsParam) params.brends = brendsParam
 		if (producersParam) params.producers = producersParam
-		if (typesParam) params.types = typesParam
+		if (typeParam) params.types = typeParam
 		if (+minPrice > 0) params.minPrice = +minPrice
 		if (+maxPrice > minPrice) params.maxPrice = +maxPrice
 		if (sortParam) params.sort = sortParam
@@ -98,39 +105,38 @@ const CatalogPage = () => {
 			.unwrap()
 			.then(res => {
 				// Получаем общее число продуктов
-				setTotalPages(Math.ceil(res.products.length / limit))
+				setTotalPages(Math.ceil(res.totalCount / limit))
 			})
 	}
 
 	const onClickTypesListEl = (title: string) => {
-		const copy = [...typesList]
-		const tmpEl = copy.find(el => el.title === title)
-		if (tmpEl) tmpEl.selected = !tmpEl.selected
-		setTypesList(copy)
-
-		setUrlParams(title, 'type')
+		searchParams.set('type', title)
 		setSearchParams(searchParams)
 	}
 
-	const onChangeSelector = (
-		name: string,
-		value: string,
-		cb?: (value: string) => void
-	) => {
+	const onChangeSelector = (name: string, value: string) => {
 		searchParams.set(name, value)
 		setSearchParams(searchParams)
 	}
 
 	// Очищаем все фильтры и параметры сортировки
 	const onClickTrash = () => {
-		setSearchParams()
-		setProducersList(prev => prev.map(el => ({ ...el, selected: false })))
-		setBrendsList(prev => prev.map(el => ({ ...el, selected: false })))
-		setTypesList(prev => prev.map(el => ({ ...el, selected: false })))
+		searchParams.delete('minPrice')
+		searchParams.delete('maxPrice')
+		searchParams.delete('page')
+		searchParams.delete('brend')
+		searchParams.delete('producer')
+
+		setSearchParams(searchParams)
+
 		setSort(undefined)
 		setOrder(undefined)
 		setMinPrice('')
 		setMaxPrice('')
+	}
+
+	const onClickBackBtn = () => {
+		navigate('/')
 	}
 
 	useEffect(() => {
@@ -151,11 +157,10 @@ const CatalogPage = () => {
 				const resultData = getFormattedFilterList(searchParams, data, 'brend')
 				setBrendsList(resultData)
 			})
-		getTypes()
+		getTypes({ IsOnlyString: true })
 			.unwrap()
 			.then(data => {
-				const resultData = getFormattedFilterList(searchParams, data, 'type')
-				setTypesList(resultData)
+				setTypesList(data as string[])
 			})
 	}, [])
 
@@ -172,150 +177,156 @@ const CatalogPage = () => {
 
 	// Получаем продукты
 	useEffect(() => {
-		getProducts({ page: currentPage, limit })
-			.unwrap()
-			.then(res => {
-				setTotalPages(Math.ceil((res.totalCount || 0) / limit))
-			})
-	}, [currentPage])
+		onClickShow()
+	}, [currentPage, type])
 
 	return (
 		<main className={cl.main}>
-			{/*HEADER*/}
-			<section>
-				{/*BREADCRUMBS*/}
-				<ul className={cl.breadcrumbs}>
-					<li>
-						<Link to='/'>Главная</Link>
-					</li>
-					<li>Косметика и гигиена</li>
-				</ul>
-				{/*HEADER TOP CONTENT*/}
-				<div className={cl.headerTopContent}>
-					<h1 className={cl.title}>Косметика и гигиена</h1>
-					<div className={cl.sortListWrapper}>
-						<p className={cl.sortTitle}>Сортировка:</p>
-						{/*SORT BLOCK*/}
-						<div className={cl.sortWrapper}>
-							<select
-								name='order'
-								id='order'
-								className={cl.selector}
-								value={order}
-								onClick={event =>
-									onChangeSelector(
-										event.currentTarget.name,
-										event.currentTarget.value,
-										() => setOrder(event.currentTarget.value)
-									)
-								}
-								defaultValue={orderParam || undefined}
-							>
-								<option disabled defaultChecked>
-									Направление
-								</option>
-								<option value='asc'>По возрастанию</option>
-								<option value='desc'>По убыванию</option>
-							</select>
+			{isLoadingBrends ||
+			isLoadingProducers ||
+			isLoadingTypes ||
+			isLoadingProducts ? (
+				<Loader />
+			) : (
+				<>
+					{/*HEADER*/}
+					<section>
+						<BackButton onClick={onClickBackBtn} className={cl.backButton} />
+						<BreadCrumbs
+							list={breadCrumbsList}
+							className={cl.adaptiveBreadCrumbs}
+						/>
+						<div className={cl.headerTopContent}>
+							<h1 className={cl.title}>{type}</h1>
+							{/*MINI*/}
+							<FilterTypesMini typesList={typesList} />
+							{/*MINI*/}
+							<div className={cl.sortListWrapper}>
+								<p className={cl.sortTitle}>Сортировка:</p>
+								{/*SORT BLOCK*/}
+								<div className={cl.sortListContainer}>
+									<div className={cl.sortWrapper}>
+										<select
+											name='order'
+											id='order'
+											className={cl.selector}
+											value={order}
+											onClick={event =>
+												onChangeSelector(
+													event.currentTarget.name,
+													event.currentTarget.value
+												)
+											}
+											defaultValue={orderParam || undefined}
+										>
+											<option disabled defaultChecked>
+												Направление
+											</option>
+											<option value='asc'>По возрастанию</option>
+											<option value='desc'>По убыванию</option>
+										</select>
+									</div>
+									<div className={cl.sortNameWrapper}>
+										<select
+											name='sort'
+											id='sort'
+											className={cl.selector}
+											value={sort}
+											onChange={event =>
+												onChangeSelector(
+													event.currentTarget.name,
+													event.currentTarget.value
+												)
+											}
+											defaultValue={sortParam || undefined}
+										>
+											<option disabled defaultChecked>
+												Поле
+											</option>
+											<option value='title'>Название</option>
+											<option value='price'>Цена</option>
+										</select>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div className={cl.sortNameWrapper}>
-							<select
-								name='sort'
-								id='sort'
-								className={cl.selector}
-								value={sort}
-								onChange={event =>
-									onChangeSelector(
-										event.currentTarget.name,
-										event.currentTarget.value,
-										() => setSort(event.currentTarget.value)
-									)
-								}
-								defaultValue={sortParam || undefined}
-							>
-								<option disabled defaultChecked>
-									Поле
-								</option>
-								<option value='title'>Название</option>
-								<option value='price'>Цена</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				{/*HEADER BOTTOM CONTENT*/}
-				<ul className={cl.typesList}>
-					{typesList.map(type => (
-						<li
-							key={type.title}
-							className={type.selected ? cl.active : ''}
-							onClick={() => onClickTypesListEl(type.title)}
-						>
-							{type.title}
-						</li>
-					))}
-				</ul>
-			</section>
+						{/*HEADER BOTTOM CONTENT*/}
+						<ul className={cl.typesList}>
+							{typesList.map(typeEl => (
+								<li
+									key={typeEl}
+									className={typeEl === type ? cl.active : ''}
+									onClick={() => onClickTypesListEl(typeEl)}
+								>
+									{typeEl}
+								</li>
+							))}
+						</ul>
+					</section>
 
-			{/*FILTER BLOCK*/}
-			<section className={cl.content}>
-				<article>
-					<div>
-						<p className={cl.filterBlockTitle}>ПОДБОР ПО ПАРАМЕТРАМ</p>
-						<PriceController
-							minPrice={minPrice}
-							maxPrice={maxPrice}
-							onChangeMaxPrice={onChangeMaxPrice}
-							onChangeMinPrice={onChangeMinPrice}
-						/>
-						<FilterBlock
-							title='Производитель'
-							list={producersList}
-							param='producer'
-						/>
-						<FilterBlock
-							title='Бренд'
-							list={brendsList}
-							isShowBorder={false}
-							param='brend'
-						/>
-					</div>
-					<div className={cl.filterBtns}>
-						{/*REQUEST*/}
-						<Button onClick={onClickShow}>Показать</Button>
-						{/*REQUEST*/}
-						<Button
-							srcImg={trashIcon}
-							style={{ padding: '20px' }}
-							onClick={onClickTrash}
-						></Button>
-					</div>
-					<FilterBlock
-						title='Тип ухода'
-						list={typesList}
-						isShowBorder={false}
-						param='type'
-					/>
-				</article>
-
-				{data?.products?.length ? (
-					<article className={cl.productGridWrapper}>
-						<ProductGrid
-							products={data.products}
-							columns={3}
-							style={{ marginBottom: '50px' }}
-						/>
-						{totalPages > 1 && (
-							<Pagination
-								currentPage={currentPage}
-								paginate={paginate}
-								totalPages={totalPages}
+					{/*FILTER BLOCK*/}
+					<section className={cl.content}>
+						<article className={cl.filterBlockWrapper}>
+							<div>
+								<p className={cl.filterBlockTitle}>ПОДБОР ПО ПАРАМЕТРАМ</p>
+								<PriceController
+									minPrice={minPrice}
+									maxPrice={maxPrice}
+									onChangeMaxPrice={onChangeMaxPrice}
+									onChangeMinPrice={onChangeMinPrice}
+								/>
+								<FilterBlock
+									title='Производитель'
+									list={producersList}
+									param='producer'
+								/>
+								<FilterBlock
+									title='Бренд'
+									list={brendsList}
+									isShowBorder={false}
+									param='brend'
+								/>
+							</div>
+							<div className={cl.filterBtns}>
+								{/*REQUEST*/}
+								<Button onClick={onClickShow}>Показать</Button>
+								{/*REQUEST*/}
+								<Button
+									srcImg={trashIcon}
+									style={{ padding: '20px' }}
+									onClick={onClickTrash}
+								></Button>
+							</div>
+							<FilterBlock
+								title='Тип ухода'
+								list={typesList}
+								isShowBorder={false}
+								param='type'
+								isRadioList={true}
 							/>
+						</article>
+
+						{productsData?.products?.length ? (
+							<article className={cl.productGridWrapper}>
+								<ProductGrid
+									products={productsData.products}
+									columns={3}
+									className={cl.adaptiveGrid}
+								/>
+								{totalPages > 1 && (
+									<Pagination
+										currentPage={currentPage}
+										paginate={paginate}
+										totalPages={totalPages}
+									/>
+								)}
+							</article>
+						) : (
+							<p className={cl.notFound}>Товары не найдены</p>
 						)}
-					</article>
-				) : (
-					<p className={cl.notFound}>Товары не найдены</p>
-				)}
-			</section>
+					</section>
+				</>
+			)}
 		</main>
 	)
 }

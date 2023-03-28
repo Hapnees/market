@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import cl from './ProductCardMainControls.module.scss'
 import cartIcon from '@/assets/ProductCard/cart.svg'
 import trashIcon from '@/assets/trash.svg'
+import shareIcon from '@/assets/ProductCard/share.svg'
 
 interface IProps {
 	product: IProduct
@@ -45,18 +46,20 @@ const ProductCardMainControls: FC<IProps> = ({ product }) => {
 
 	return (
 		<article className={cl.wrapper}>
-			<p className={cl.price}>{product.price} ₸</p>
-
-			<div className={cl.controls}>
-				<ButtonAdjustment onClick={onClickDecrease}>-</ButtonAdjustment>
-				<p className={cl.amount}>{quantity}</p>
-				<ButtonAdjustment onClick={onClickIncrease}>+</ButtonAdjustment>
+			<div className={cl.leftSide}>
+				<p className={cl.price}>{(product.price * quantity).toFixed(2)} ₸</p>
+				<div className={cl.controls}>
+					<ButtonAdjustment onClick={onClickDecrease}>-</ButtonAdjustment>
+					<p className={cl.amount}>{quantity}</p>
+					<ButtonAdjustment onClick={onClickIncrease}>+</ButtonAdjustment>
+				</div>
 			</div>
 
 			<div className={cl.buttons}>
 				<Button srcImg={cartIcon} onClick={onClickCart}>
 					В корзину
 				</Button>
+				<img src={shareIcon} alt='' className={cl.shareIcon} />
 				{/*// В админ-моде*/}
 				{isAdminMode && (
 					<Button

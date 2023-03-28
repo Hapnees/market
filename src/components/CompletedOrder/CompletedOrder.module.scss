@@ -5,11 +5,15 @@
 	align-items: center;
 	justify-content: center;
 
-	width: 735px;
-	height: 424px;
+	@include adaptive-size(width, 735, 290);
+	@include adaptive-size(height, 424, 288);
 
 	background: #fff;
 	border-radius: 8px;
+
+	@media (max-width: 750px) {
+		margin-top: 123px;
+	}
 }
 
 .img {
@@ -23,7 +27,8 @@
 .title {
 	text-transform: uppercase;
 	font-weight: 500;
-	font-size: 40px;
+
+	@include adaptive-font(40, 20);
 	line-height: 120%;
 
 	margin-bottom: 20px;
@@ -32,15 +37,20 @@
 .subtitle {
 	color: $grayBlue;
 	font-weight: 300;
-	font-size: 20px;
+	@include adaptive-font(20, 12);
 	line-height: 120%;
+
+	text-align: center;
+	@include adaptive-size(width, 521, 197);
 }
 
 .cross {
 	position: absolute;
-	right: 36px;
-	top: 36px;
+
+	@include adaptive-size(top, 36, 16);
+	@include adaptive-size(right, 36, 16);
+
+	cursor: pointer;
 
 	padding: 5px;
-	cursor: pointer;
 }

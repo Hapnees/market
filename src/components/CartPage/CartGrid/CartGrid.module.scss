@@ -71,7 +71,12 @@
 .rightSide {
 	display: flex;
 	align-items: center;
+
 	> div {
+		display: flex;
+		align-items: center;
+
+		height: 49px;
 		white-space: nowrap;
 		border-left: 1px dashed rgba($color: $grayBlue, $alpha: 0.2);
 
@@ -95,7 +100,10 @@
 }
 
 .price {
+	text-align: center;
 	font-weight: 700;
 	font-size: 30px;
 	line-height: 130%;
+
+	width: 210px;
 }

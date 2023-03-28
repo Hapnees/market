@@ -3,16 +3,36 @@
 	flex-direction: column;
 
 	margin-bottom: 100px;
-	padding: 0 $mainPadding;
+	@include adaptive-padding(0, 277, 15, 320);
 }
 
 .productList {
-	display: flex;
-	gap: 10px;
+	//display: flex;
+	display: grid;
+	align-self: center;
+	grid-template-columns: repeat(10, 127.6px);
+
+	column-gap: 10px;
 
 	height: 77px;
 
 	margin-bottom: 40px;
+
+	@media (max-width: 1400px) {
+		align-self: center;
+	}
+
+	@media (max-width: 1394px) {
+		grid-template-columns: repeat(5, 127.6px);
+	}
+
+	@media (max-width: 706px) {
+		grid-template-columns: repeat(3, 127.6px);
+	}
+
+	@media (max-width: 416px) {
+		grid-template-columns: repeat(2, 127.6px);
+	}
 
 	> li {
 		display: flex;
@@ -25,9 +45,26 @@
 		cursor: pointer;
 
 		min-width: 102px;
+
+		> img {
+			max-width: 127.6px;
+			object-fit: contain;
+		}
 	}
 }
 
 .switcherWrapper {
 	align-self: center;
+
+	@media (max-width: 1136px) {
+		margin-top: 50px;
+	}
+
+	@media (max-width: 706px) {
+		margin-top: 170px;
+	}
+
+	@media (max-width: 416px) {
+		margin-top: 245px;
+	}
 }

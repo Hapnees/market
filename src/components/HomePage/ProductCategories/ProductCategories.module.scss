@@ -1,3 +1,7 @@
 .wrapper {
-	padding: 0 $mainPadding;
+	display: flex;
+	flex-direction: column;
+
+	@include adaptive-padding(0, 277, 15, 320);
+	//padding: 0 $mainPadding;
 }

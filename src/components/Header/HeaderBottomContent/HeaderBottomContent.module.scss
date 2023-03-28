@@ -1,11 +1,32 @@
 .wrapper {
+	display: flex;
+	justify-content: center;
 	border-bottom: 1px solid rgba($color: $grayBlue, $alpha: 0.2);
-	padding: 10px $mainPadding;
+
+	@include adaptive-padding(10, 277, 60, 1484);
+	//padding: 10px calc(60px + (277 - 60) * ((100vw - 1484px) / (1920 - 1484)));
+
+	@media (max-width: 539px) {
+		display: none;
+	}
 }
 
 .content {
 	display: flex;
 	align-items: center;
+}
+
+.controls {
+	display: flex;
+	align-items: center;
+
+	@media (max-width: 1139px) {
+		margin-right: 50px;
+	}
+
+	@media (max-width: 866px) {
+		display: none;
+	}
 }
 
 .logo {
@@ -19,4 +40,8 @@
 
 	margin: 0 25px;
 	padding: 0 25px;
+
+	@media (max-width: 1139px) {
+		display: none;
+	}
 }

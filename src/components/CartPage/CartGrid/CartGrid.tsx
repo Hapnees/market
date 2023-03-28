@@ -3,15 +3,19 @@ import ButtonAdjustment from '@/components/UI/ButtonAdjustment/ButtonAdjustment'
 import VolumeBlock from '@/components/VolumeBlock/VolumeBlock'
 import { useActions } from '@/hooks/useActions'
 import { IProductModif } from '@/types/product.interface'
-import { FC } from 'react'
+import { DetailedHTMLProps, FC, HTMLAttributes } from 'react'
 import cl from './CartGrid.module.scss'
 import trashIcon from '@/assets/CatalogPage/trash.svg'
 
-interface IProps {
+interface IProps
+	extends DetailedHTMLProps<
+		HTMLAttributes<HTMLUListElement>,
+		HTMLUListElement
+	> {
 	products: IProductModif[]
 }
 
-const CartGrid: FC<IProps> = ({ products }) => {
+const CartGrid: FC<IProps> = ({ className, products, ...props }) => {
 	const { changeQuantity, removeProductFromCart: removeProduct } = useActions()
 
 	const onClickDecreaseQuantity = (id: number) => {
@@ -25,7 +29,7 @@ const CartGrid: FC<IProps> = ({ products }) => {
 	const onClickTrash = (id: number) => removeProduct(id)
 
 	return (
-		<ul className={cl.list}>
+		<ul className={`${cl.list} ${className}`} {...props}>
 			{products.map(product => (
 				<li key={product.id}>
 					<img src={product.img} alt='Изображение не найдено' />
@@ -54,7 +58,9 @@ const CartGrid: FC<IProps> = ({ products }) => {
 								</ButtonAdjustment>
 							</div>
 
-							<div className={cl.price}>{product.price} ₸</div>
+							<div className={cl.price}>
+								{(product.price * product.quantity).toFixed(2)} ₸
+							</div>
 
 							<div>
 								<Button

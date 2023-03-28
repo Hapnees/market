@@ -1,7 +1,7 @@
 import Input from '@/components/UI/Input/Input'
 import TitleWithArrow from '@/components/UI/TitleWithArrow/TitleWithArrow'
 import useSetUrlParams from '@/hooks/useSetSearchParams'
-import { IFilterList } from '@/types/product.interface'
+import { IFilterListEl } from '@/types/product.interface'
 import {
 	FC,
 	HtmlHTMLAttributes,
@@ -12,13 +12,15 @@ import {
 } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import cl from './FilterBlock.module.scss'
+import getFormattedFilterList from '@/formatters/filterList.formatter'
 
 interface IProps extends HtmlHTMLAttributes<HTMLDivElement> {
 	title: string
-	list: IFilterList[]
+	list: IFilterListEl[] | string[]
 	isShowBorder?: boolean
 	param?: string
 	callback?: (value: string) => unknown
+	isRadioList?: boolean
 }
 
 const FilterBlock: FC<IProps> = ({
@@ -27,6 +29,7 @@ const FilterBlock: FC<IProps> = ({
 	isShowBorder = true,
 	param,
 	callback,
+	isRadioList,
 	...props
 }) => {
 	const isGotList = useRef<boolean>(false)
@@ -40,24 +43,17 @@ const FilterBlock: FC<IProps> = ({
 
 	// Сетаем параметр в URl при его изменении
 	const onChangeCheckbox = (value: string) => {
-		// Переключаем чекбокс
-		const copy = [...currentList]
-		const tmpEl = copy.find(el => el.title === value)
-		if (tmpEl) tmpEl.selected = !tmpEl.selected
-		setCurrentList(copy)
-		//
-
-		// TODO:
 		if (param) {
-			setUrlParams(value, param)
+			if (isRadioList) {
+				searchParams.set(param, value)
+			} else {
+				setUrlParams(value, param)
+			}
+
 			setSearchParams(searchParams)
 		}
 
-		// Выполняем коллбэк, если он был передан
-		if (callback) {
-			callback(value)
-		}
-		////
+		if (callback) callback
 	}
 
 	const onClickTitleArrow = () => {
@@ -74,23 +70,22 @@ const FilterBlock: FC<IProps> = ({
 			setCurrentList(list)
 			setIsShowAll(false)
 		} else {
-			setCurrentList(
-				list.filter(el =>
-					el.title.toLowerCase().includes(search.current!.value.toLowerCase())
+			if (isRadioList) {
+				setCurrentList(
+					(list as string[]).filter(el =>
+						el.toLowerCase().includes(search.current!.value.toLowerCase())
+					)
 				)
-			)
+			} else {
+				setCurrentList(
+					(list as IFilterListEl[]).filter(el =>
+						el.title.toLowerCase().includes(search.current!.value.toLowerCase())
+					)
+				)
+			}
 			setIsShowAll(true)
 		}
 	}
-
-	// Следим за фильтром
-	// Если параметр равен своему минимальному значению, удаляем его из URL
-	useEffect(() => {
-		if (!param) return
-
-		if (!searchParams.get(param)) searchParams.delete(param)
-		setSearchParams(searchParams)
-	}, [searchParams])
 
 	// Сетаем фильтр-лист
 	useEffect(() => {
@@ -99,6 +94,20 @@ const FilterBlock: FC<IProps> = ({
 		setCurrentList(list)
 		isGotList.current = true
 	}, [list])
+
+	useEffect(() => {
+		if (!param) return
+
+		const newList = isRadioList
+			? list
+			: getFormattedFilterList(
+					searchParams,
+					(list as IFilterListEl[]).map(el => el.title),
+					param
+			  )
+
+		setCurrentList(newList)
+	}, [searchParams])
 
 	return (
 		<article className={cl.wrapper} {...props}>
@@ -113,22 +122,41 @@ const FilterBlock: FC<IProps> = ({
 						searchEvent={searchEvent}
 					/>
 
-					<div className={isShowBorder ? `${cl.producersListWrapper}` : ''}>
-						<ul className={cl.producersList}>
-							{(isShowAll ? currentList : currentList?.slice(0, 4))?.map(
-								element => (
-									<li key={element.title}>
-										<input
-											type='checkbox'
-											id={element.title}
-											checked={element.selected}
-											onChange={event => onChangeCheckbox(event.target.id)}
-										/>
-										<label htmlFor={element.title}>{element.title}</label>
-									</li>
-								)
-							)}
+					<div className={isShowBorder ? `${cl.listWrapper}` : ''}>
+						<ul className={cl.list}>
+							{isRadioList && param
+								? (
+										(isShowAll
+											? currentList
+											: currentList?.slice(0, 4)) as string[]
+								  )?.map(element => (
+										<li key={element}>
+											<input
+												type='radio'
+												id={element}
+												checked={element === searchParams.get(param)}
+												onChange={event => onChangeCheckbox(event.target.id)}
+											/>
+											<label htmlFor={element}>{element}</label>
+										</li>
+								  ))
+								: (
+										(isShowAll
+											? currentList
+											: currentList?.slice(0, 4)) as IFilterListEl[]
+								  )?.map(element => (
+										<li key={element.title}>
+											<input
+												type='checkbox'
+												id={element.title}
+												checked={element.selected}
+												onChange={event => onChangeCheckbox(event.target.id)}
+											/>
+											<label htmlFor={element.title}>{element.title}</label>
+										</li>
+								  ))}
 						</ul>
+
 						<TitleWithArrow
 							onClick={onClickTitleArrow}
 							style={{ color: '#3f4e65', fontSize: '12px' }}

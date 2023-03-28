@@ -10,9 +10,9 @@ interface IProps
 	href?: string
 }
 
-const Button: FC<IProps> = ({ children, srcImg, ...props }) => {
+const Button: FC<IProps> = ({ children, className, srcImg, ...props }) => {
 	return (
-		<button className={cl.wrapper} {...props}>
+		<button className={`${cl.wrapper} ${className}`} {...props}>
 			{children && <p>{children}</p>}
 			{srcImg && <img src={srcImg} alt='' />}
 		</button>

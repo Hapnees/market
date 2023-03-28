@@ -1,6 +1,13 @@
 .form {
-	display: flex;
-	gap: 100px;
+	//display: flex;
+	//gap: 10px;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	column-gap: 100px;
+
+	@media (max-width: 1380px) {
+		grid-template-columns: repeat(1, 1fr);
+	}
 }
 
 .data {
@@ -72,4 +79,57 @@
 	> span {
 		font-weight: 600;
 	}
+}
+
+.secondColumn {
+	display: flex;
+	flex-direction: column;
+
+	@media (max-width: 1380px) {
+		> .adaptiveComment {
+			order: 1;
+		}
+
+		> .blockList {
+			order: 2;
+		}
+	}
+}
+
+.adaptiveOrderButton {
+	@media (max-width: 1380px) {
+		display: none;
+	}
+}
+
+.acceptOrderWrapper {
+	display: none;
+
+	@media (max-width: 1380px) {
+		display: block;
+	}
+}
+
+.priceWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	margin-bottom: 30px;
+}
+
+.price {
+	font-weight: 700;
+	font-size: 30px;
+	line-height: 130%;
+}
+
+.pencilButton {
+	padding: 19.6px;
+}
+
+.acceptOrderButton {
+	display: flex;
+	justify-content: center;
+	width: 100%;
 }

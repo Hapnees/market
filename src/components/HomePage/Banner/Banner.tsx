@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router'
 import cl from './Banner.module.scss'
+import bannerImg from '@/assets/HomePage/banner.png'
+import BannerControls from '../BannerControls/BannerControls'
+import BannerControlsAdaptive from '../BannerControlsAdaptive/BannerControlsAdaptive'
 
 const Banner = () => {
 	const navigate = useNavigate()
@@ -10,29 +13,22 @@ const Banner = () => {
 
 	return (
 		<article className={cl.wrapper}>
-			<div className={cl.gradient}></div>
+			<img src={bannerImg} alt='' className={cl.bannerImg} />
+			<div className={cl.contentWrapper}>
+				<div className={cl.gradient}></div>
 
-			<div className={cl.content}>
-				<p className={cl.title}>Бытовая химия, косметика и хозтовары</p>
-				<p className={cl.subtitle}>оптом по кокчетаву и области</p>
+				<div className={cl.content}>
+					<p className={cl.title}>Бытовая химия, косметика и хозтовары</p>
+					<p className={cl.subtitle}>оптом по кокчетаву и области</p>
 
-				<button className={cl.catalogBtn} onClick={onClickCatalogBtn}>
-					в каталог
-				</button>
+					<button className={cl.catalogBtn} onClick={onClickCatalogBtn}>
+						в каталог
+					</button>
 
-				<ul className={cl.controlsList}>
-					<li>
-						<button>+</button>
-						<p>Только самые выгодные предложения</p>
-					</li>
-					<li>
-						<button>+</button>
-						<p>
-							Бесплатная доставка по <span>Кокчетаву от 10 тыс ₸</span>
-						</p>
-					</li>
-				</ul>
+					<BannerControls />
+				</div>
 			</div>
+			<BannerControlsAdaptive />
 		</article>
 	)
 }

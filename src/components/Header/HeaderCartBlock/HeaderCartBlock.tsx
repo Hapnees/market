@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { useNavigate } from 'react-router'
 import cl from './HeaderCartBlock.module.scss'
-import cartIcon from '@/assets/Header/cart.svg'
+import Cart from '@/components/UI/Cart/Cart'
 
 const HeaderCartBlock = () => {
 	const navigate = useNavigate()
@@ -17,12 +17,7 @@ const HeaderCartBlock = () => {
 
 	return (
 		<article className={cl.wrapper} onClick={onClickWrapper}>
-			<div className={cl.imgContainer}>
-				<div className={cl.circle}>
-					<div className={cl.innerCircle}>{products.length}</div>
-				</div>
-				<img src={cartIcon} alt='' />
-			</div>
+			<Cart numProducts={products.length} style={{ marginRight: '25px' }} />
 
 			<div className={cl.info}>
 				<p>Корзина</p>

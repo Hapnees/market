@@ -14,7 +14,12 @@ const Footer = () => {
 		<footer className={cl.footer}>
 			<ul className={cl.list}>
 				<li>
-					<img src={logoIcon} alt='' className={cl.logo} />
+					<div className={cl.logoWrapper}>
+						<img src={logoIcon} alt='' className={cl.logo} />
+						<Button srcImg={priceListIcon} className={cl.adaptiveButton}>
+							Прайс-лист
+						</Button>
+					</div>
 					<p className={cl.text}>
 						Компания «Султан» — снабжаем розничные магазины товарами "под ключ"
 						в Кокчетаве и Акмолинской области
@@ -46,9 +51,11 @@ const Footer = () => {
 				</li>
 
 				<li>
-					<p className={cl.listElTitle}>Скачать прайс-лист:</p>
+					<p className={`${cl.listElTitle} ${cl.priceListTitle}`}>
+						Скачать прайс-лист:
+					</p>
 
-					<Button srcImg={priceListIcon} style={{ marginBottom: '20px' }}>
+					<Button srcImg={priceListIcon} className={cl.adaptivePriceListButton}>
 						Прайс-лист
 					</Button>
 

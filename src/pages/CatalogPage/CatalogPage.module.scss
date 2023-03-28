@@ -1,28 +1,15 @@
 .main {
-	padding: 45px $mainPadding 102px $mainPadding;
-}
-
-.breadcrumbs {
 	display: flex;
-	gap: 10px;
+	flex-direction: column;
+	align-items: center;
 
-	color: $grayBlue;
-	font-weight: 300;
-	font-size: 14px;
-	line-height: 120%;
+	padding-top: 45px;
+	padding-bottom: 102px;
+	@include adaptive-size(padding-right, 277, 15);
+	@include adaptive-size(padding-left, 277, 15);
 
-	margin-bottom: 50px;
-
-	> li {
-		cursor: pointer;
-		border-right: 1px dashed rgba($color: $grayBlue, $alpha: 0.2);
-		padding-right: 10px;
-
-		&:last-child {
-			color: rgba($color: $grayBlue, $alpha: 0.5);
-			border-right: none;
-			padding-right: 0;
-		}
+	@media (max-width: 380px) {
+		align-items: normal;
 	}
 }
 
@@ -30,15 +17,33 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	white-space: nowrap;
+
+	@include adaptive-size(gap, 100, 30, 750);
+	//gap: 100px;
 
 	margin-bottom: 25px;
+
+	@media (max-width: 740px) {
+		flex-direction: column;
+		gap: 0;
+	}
 }
 
 .title {
 	font-weight: 500;
-	font-size: 40px;
+	@include adaptive-font(40, 20);
+	//font-size: 40px;
 	line-height: 120%;
 	text-transform: uppercase;
+
+	@media (max-width: 740px) {
+		margin-bottom: 20px;
+	}
+
+	@media (max-width: 321px) {
+		align-self: flex-start;
+	}
 }
 
 .filterBlockTitle {
@@ -53,6 +58,15 @@
 .sortListWrapper {
 	display: flex;
 	align-items: center;
+	gap: 5px;
+
+	@media (max-width: 380px) {
+		flex-direction: column;
+	}
+}
+
+.sortListContainer {
+	display: flex;
 	gap: 5px;
 }
 
@@ -80,10 +94,20 @@
 }
 
 .typesList {
-	display: flex;
-	gap: 11px;
+	//display: flex;
+	display: grid;
+	grid-template-columns: repeat(12, minmax(90px, 111.45px));
+	column-gap: 11px;
 
 	margin-bottom: 50px;
+
+	@media (max-width: 1250px) {
+		grid-template-columns: repeat(6, minmax(90px, 111.45px));
+	}
+
+	@media (max-width: 740px) {
+		display: none;
+	}
 
 	> li {
 		display: flex;
@@ -114,7 +138,17 @@
 
 .content {
 	display: flex;
-	justify-content: space-between;
+	//justify-content: space-between;
+	//width: 100%;
+
+	@include adaptive-size(gap, 108, 0);
+	//gap: 108px;
+}
+
+.filterBlockWrapper {
+	@media (max-width: 646px) {
+		display: none;
+	}
 }
 
 .filterBlockTitle {
@@ -128,6 +162,7 @@
 .filterBtns {
 	display: flex;
 	align-items: center;
+	gap: 15px;
 
 	margin-bottom: 40px;
 }
@@ -136,6 +171,11 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	@media (max-width: 380px) {
+		width: 100%;
+		align-self: center;
+	}
 }
 
 .notFound {
@@ -150,4 +190,28 @@
 
 .active {
 	background-color: #e1e1e1;
+}
+
+.adaptiveGrid {
+	margin-bottom: 50px;
+
+	@media (max-width: 1390px) {
+		grid-template-columns: repeat(2, 1fr) !important;
+	}
+
+	@media (max-width: 1010px) {
+		grid-template-columns: repeat(1, 1fr) !important;
+	}
+}
+
+.adaptiveBreadCrumbs {
+	@media (max-width: 321px) {
+		display: none;
+	}
+}
+
+.backButton {
+	@media (min-width: 322px) {
+		display: none;
+	}
 }

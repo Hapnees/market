@@ -1,8 +1,26 @@
 .main {
-	padding: 45px $mainPadding;
+	display: flex;
+	flex-direction: column;
+
+	@include adaptive-padding(45, 277, 15);
+}
+
+.header {
+	@media (max-width: 1010px) {
+		align-self: center;
+	}
+
+	@media (max-width: 350px) {
+		align-self: flex-start;
+	}
+}
+
+.title {
+	margin-bottom: 50px;
 }
 
 .content {
+	align-self: center;
 	display: flex;
 	gap: 120px;
 }
@@ -10,4 +28,16 @@
 .emptyCartTitle {
 	text-align: center;
 	padding: 30px 0;
+}
+
+.backButton {
+	@media (min-width: 561px) {
+		display: none;
+	}
+}
+
+.adaptiveBreadCrumbs {
+	@media (max-width: 560px) {
+		display: none;
+	}
 }

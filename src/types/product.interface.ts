@@ -31,7 +31,7 @@ export interface IGetProductsParams {
 	order?: string
 }
 
-export interface IFilterList {
+export interface IFilterListEl {
 	title: string
 	selected: boolean
 }

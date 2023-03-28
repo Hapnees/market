@@ -1,40 +1,31 @@
 import cl from './ProductCategoriesList.module.scss'
-import img1 from '@/assets/ProductCategories/img1.png'
-import img2 from '@/assets/ProductCategories/img2.png'
-import img3 from '@/assets/ProductCategories/img3.png'
-import img4 from '@/assets/ProductCategories/img4.png'
-import img5 from '@/assets/ProductCategories/img5.png'
+import { DetailedHTMLProps, FC, HTMLAttributes } from 'react'
+import { useGetTypesQuery } from '@/api/api'
+import { IType } from '@/types/types.type.interface'
+import Loader from '@/components/Loader/Loader'
+import { useNavigate } from 'react-router-dom'
 
-const ProductCategoriesList = () => {
-	const list = [
-		{
-			src: img1,
-			title: 'Бытовая химия',
-		},
-		{
-			src: img2,
-			title: 'Косметика и гигиена',
-		},
-		{
-			src: img3,
-			title: 'Товары для дома',
-		},
-		{
-			src: img4,
-			title: 'Товары для детей и мам',
-		},
-		{
-			src: img5,
-			title: 'Посуда',
-		},
-	]
+const ProductCategoriesList: FC<
+	DetailedHTMLProps<HTMLAttributes<HTMLUListElement>, HTMLUListElement>
+> = ({ ...props }) => {
+	const navigate = useNavigate()
+	const { data: typesList, isLoading } = useGetTypesQuery({
+		title:
+			'(Бытовая химия|Косметика и гигиена|Товары для дома|Товары для детей и мам|Посуда)',
+	})
+
+	const onClickListEl = (title: string) => {
+		navigate({ pathname: '/catalog', search: `type=${title}` })
+	}
+
+	if (isLoading) return <Loader />
 
 	return (
-		<ul className={cl.categoryList}>
-			{list.map(el => (
-				<li key={el.title}>
+		<ul className={cl.categoryList} {...props}>
+			{(typesList as IType[])?.map(el => (
+				<li key={el.title} onClick={() => onClickListEl(el.title)}>
 					<div className={cl.imgWrapper}>
-						<img src={el.src} alt='' />
+						<img src={el.img} alt='' />
 					</div>
 					<p className={cl.categoryTitle}>{el.title}</p>
 				</li>

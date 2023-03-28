@@ -4,6 +4,10 @@
 	gap: 10px;
 
 	margin-left: 35px;
+
+	@media (max-width: 1485px) {
+		display: none;
+	}
 }
 
 .info {

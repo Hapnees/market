@@ -1,4 +1,30 @@
 .wrapper {
+	display: flex;
+	flex-direction: column;
+
 	margin-bottom: 100px;
-	padding: 100px $mainPadding;
+
+	//padding: 100px $mainPadding;
+	@include adaptive-padding(100, 277, 15, 320);
+
+	@media (max-width: 549px) {
+		@include adaptive-padding(150, 277, 15, 320);
+	}
+}
+
+.adaptiveGrid {
+	align-self: center;
+	margin-top: 50px;
+
+	@media (max-width: 1410px) {
+		grid-template-columns: repeat(3, 1fr) !important;
+	}
+
+	@media (max-width: 1040px) {
+		grid-template-columns: repeat(2, 1fr) !important;
+	}
+
+	@media (max-width: 690px) {
+		grid-template-columns: repeat(1, 1fr) !important;
+	}
 }

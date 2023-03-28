@@ -10,7 +10,7 @@ const ProductCategories = () => {
 			</p>
 			<p className='subtitle'>10 000+ ходовых позиций по спецмальным ценам</p>
 
-			<ProductCategoriesList />
+			<ProductCategoriesList style={{ alignSelf: 'center' }} />
 			<ProductCategoriesBanner />
 		</article>
 	)

@@ -1,0 +1,30 @@
+@mixin adaptive-padding($firstArg, $pcSize, $mobSize, $adaptiveWidth: 320) {
+	$addSize: $pcSize - $mobSize;
+	$maxWidth: $maxWidth - $adaptiveWidth;
+	padding: #{$firstArg + px} calc(#{$mobSize + px} + #{$addSize} *
+				((100vw - #{$adaptiveWidth + px}) / #{$maxWidth}));
+}
+
+@mixin adaptive-margin($firstArg, $pcSize, $mobSize, $adaptiveWidth: 320) {
+	$addSize: $pcSize - $mobSize;
+	$maxWidth: $maxWidth - $adaptiveWidth;
+	margin: #{$firstArg + px} calc(#{$mobSize + px} + #{$addSize} *
+				((100vw - #{$adaptiveWidth + px}) / #{$maxWidth}));
+}
+
+@mixin adaptive-size($property, $pcSize, $mobSize, $customSize: 320) {
+	$addSize: $pcSize - $mobSize;
+	$maxWidth: $maxWidth - $customSize;
+	#{$property}: calc(
+		#{$mobSize + px} + #{$addSize} *
+			((100vw - #{$customSize + px}) / #{$maxWidth})
+	);
+}
+
+@mixin adaptive-font($pcSize, $mobSize) {
+	$addSize: $pcSize - $mobSize;
+	$maxWidth: $maxWidth - 320;
+	font-size: calc(
+		#{$mobSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth})
+	);
+}

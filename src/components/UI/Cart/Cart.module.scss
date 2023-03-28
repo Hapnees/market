@@ -1,0 +1,48 @@
+.imgContainer {
+	display: flex;
+	position: relative;
+
+	cursor: pointer;
+
+	margin-right: 10px;
+}
+
+.circle {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	color: #fff;
+	background-color: #fff;
+
+	font-weight: 700;
+	font-size: 14px;
+
+	border-radius: 100%;
+
+	@include adaptive-size(right, -10, -13);
+	@include adaptive-size(top, -8, -11);
+
+	aspect-ratio: 1 / 1;
+	width: 26px;
+}
+
+.innerCircle {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: $orange;
+
+	border-radius: 100%;
+
+	aspect-ratio: 1 / 1;
+	width: 22px;
+}
+
+.img {
+	aspect-ratio: 41 / 29;
+	//width: 41px;
+	@include adaptive-size(width, 41, 30);
+	//width: calc(33px + (41 - 33) * ((100vw - 320px) / (1920 - 320)));
+}

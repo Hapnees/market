@@ -5,7 +5,8 @@
 
 	border-bottom: 1px solid rgba($color: $grayBlue, $alpha: 0.2);
 
-	padding: 14px $mainPadding;
+	@include adaptive-padding(14, 277, 60, 1154);
+	//padding: 14px calc(60px + (277 - 60) * ((100vw - 1154px) / (1920 - 1154)));
 }
 
 .leftSideMenu {
@@ -17,7 +18,10 @@
 		gap: 15px;
 
 		border-right: 1px dashed rgba(0, 0, 0, 0.05);
-		padding: 0 20px;
+		//padding: 0 20px;
+
+		@include adaptive-padding(0, 20, 11, 1134);
+		//padding: 0 calc(11px + (20 - 11) * ((100vw - 1134px) / (1920 - 1134)));
 
 		&:first-child {
 			padding-left: 0;
@@ -27,6 +31,14 @@
 			border-right: none;
 			padding-right: 0;
 		}
+	}
+
+	@media (max-width: 1000px) {
+		margin-left: 15px;
+	}
+
+	@media (max-width: 539px) {
+		display: none;
 	}
 }
 
@@ -48,9 +60,15 @@
 	font-size: 14px;
 	line-height: 150%;
 
+	@media (max-width: 1070px) {
+		display: none;
+	}
+
 	a {
 		color: $grayBlue;
-		padding: 0 30px;
+		@include adaptive-padding(0, 30, 13, 1154);
+		//padding: 0 calc(13px + (30 - 13) * ((100vw - 1154px) / (1920 - 1154)));
+
 		border-right: 1px dashed rgba($color: $grayBlue, $alpha: 0.01);
 
 		&:first-child {
@@ -109,4 +127,30 @@
 	to {
 		transform: scale(1);
 	}
+}
+
+.miniHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	& > *:not(:first-child) {
+		display: none;
+	}
+
+	@media (max-width: 539px) {
+		& > *:not(:first-child) {
+			display: block;
+		}
+
+		width: 100%;
+		padding: 0 15px;
+	}
+}
+
+.logo {
+	aspect-ratio: 77 / 33;
+	//width: 156px;
+	@include adaptive-size(width, 156, 97);
+	//width: calc(97px + (156 - 97) * ((100vw - 320px) / (1920 - 320)));
 }

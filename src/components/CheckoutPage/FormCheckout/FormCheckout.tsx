@@ -11,10 +11,17 @@ import { useNavigate } from 'react-router'
 import cl from './FormCheckout.module.scss'
 import walletIcon from '@/assets/CheckoutPage/wallet.svg'
 import deliveryIcon from '@/assets/CheckoutPage/delivery.svg'
+import pencilIcon from '@/assets/pencil.svg'
+import { useAppSelector } from '@/hooks/useAppSelector'
 
 const FormCheckout = () => {
 	const { clearCart } = useActions()
 	const navigate = useNavigate()
+	const { products } = useAppSelector(state => state.cart)
+
+	const totalPrice = products
+		.reduce((accum, item) => accum + item.price * item.quantity, 0)
+		.toFixed(2)
 
 	const [isShowModal, setIsShowModal] = useState(false)
 
@@ -112,26 +119,29 @@ const FormCheckout = () => {
 						/>
 					</div>
 				</article>
-				<Button>Подтверждение заказа</Button>
+				<Button className={cl.adaptiveOrderButton}>
+					Подтв ерждение заказа
+				</Button>
 			</article>
+
 			{/*SECOND COLUMN*/}
-			<article>
-				{/*PAYMENT*/}
-				<div className={cl.block}>
-					<p className={cl.title} style={{ marginBottom: '15px' }}>
-						<span>
-							<img src={walletIcon} alt='' />
-						</span>
-						Оплата
-					</p>
-
-					<p className={cl.subtitle}>
-						Принимаем оплату наличными, по карте и через расчетный счет.
-					</p>
-				</div>
-
+			<article className={cl.secondColumn}>
 				{/*DELIVERY*/}
 				<article className={cl.blockList}>
+					{/*PAYMENT*/}
+					<div className={cl.block}>
+						<p className={cl.title} style={{ marginBottom: '15px' }}>
+							<span>
+								<img src={walletIcon} alt='' />
+							</span>
+							Оплата
+						</p>
+
+						<p className={cl.subtitle}>
+							Принимаем оплату наличными, по карте и через расчетный счет.
+						</p>
+					</div>
+
 					<div className={cl.block}>
 						<p className={cl.title} style={{ marginBottom: '15px' }}>
 							<span>
@@ -157,7 +167,7 @@ const FormCheckout = () => {
 					</div>
 				</article>
 
-				<div>
+				<div className={cl.adaptiveComment}>
 					<p className={cl.title}>
 						<span>3</span> Дополнительно
 					</p>
@@ -170,6 +180,14 @@ const FormCheckout = () => {
 						/>
 					</div>
 				</div>
+			</article>
+
+			<article className={cl.acceptOrderWrapper}>
+				<div className={cl.priceWrapper}>
+					<p className={cl.price}>{totalPrice} ₸</p>
+					<Button srcImg={pencilIcon} className={cl.pencilButton}></Button>
+				</div>
+				<Button className={cl.acceptOrderButton}>Подтвердить заказ</Button>
 			</article>
 			{isShowModal && (
 				<ModalWindow>

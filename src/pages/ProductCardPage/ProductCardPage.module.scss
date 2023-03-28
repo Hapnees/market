@@ -1,3 +1,15 @@
 .main {
-	padding: 45px $mainPadding 0 $mainPadding;
+	@include adaptive-padding(45, 277, 15);
+}
+
+.backButton {
+	@media (min-width: 547px) {
+		display: none;
+	}
+}
+
+.adaptiveBreadCrumbs {
+	@media (max-width: 546px) {
+		display: none;
+	}
 }

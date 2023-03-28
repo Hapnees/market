@@ -24,7 +24,7 @@ const AdminFiltersPage = () => {
 			return
 		}
 
-		addProducer(producerRef.current.value)
+		addProducer({ id: Date.now(), title: producerRef.current.value })
 	}
 
 	return (
