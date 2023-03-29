@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 const persistor = persistStore(store)
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-	<HashRouter basename={process.env.PUBLIC_URL}>
+	<HashRouter>
 		<ToastContainer {...toastContainerConfig} />
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>

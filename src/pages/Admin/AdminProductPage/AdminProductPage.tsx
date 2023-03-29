@@ -80,7 +80,7 @@ const AdminProductPage = () => {
 		const body: IProduct = {
 			id: product?.id || Date.now(),
 			title: data.title,
-			img: product?.img || '',
+			img: data.img || imgUrl || '',
 			typeSize: data.typeSize,
 			size: +data.size,
 			amount: +data.amount,
@@ -155,6 +155,7 @@ const AdminProductPage = () => {
 				setValue('amount', data.amount)
 				setValue('size', data.size)
 				setValue('typeSize', data.typeSize)
+				setValue('img', imgUrl)
 				setProducer(data.producer)
 				setBrend(data.brend)
 				setSelectedTypesList(data.types)

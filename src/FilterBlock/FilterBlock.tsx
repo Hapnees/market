@@ -67,7 +67,7 @@ const FilterBlock: FC<IProps> = ({
 			setSearchParams(searchParams)
 		}
 
-		if (callback) callback
+		if (callback) callback(value)
 	}
 
 	const onClickTitleArrow = () => {
