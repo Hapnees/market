@@ -14,11 +14,11 @@ const getFormattedFilterList = (
 		selected: false,
 	}))
 
-	const producersFromUrl = searchParams.get(paramTitle)?.split(',')
-	if (producersFromUrl) {
+	const paramsFromUrl = searchParams.get(paramTitle)?.split(',')
+	if (paramsFromUrl) {
 		result = result.map(el => ({
 			...el,
-			selected: producersFromUrl.includes(el.title),
+			selected: paramsFromUrl.includes(el.title),
 		}))
 	}
 

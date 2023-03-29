@@ -17,7 +17,7 @@ const ProductCardPage = () => {
 	useEffect(() => {
 		if (!params.id) return
 
-		getProduct(+params.id!).then(() =>
+		getProduct(+params.id!).catch(() =>
 			toast.error('Ошибка при получении товара')
 		)
 	}, [params.id])
