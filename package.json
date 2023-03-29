@@ -1,7 +1,7 @@
 {
 	"name": "market",
 	"private": true,
-	"homepage": "https://hapnees.github.io/market/",
+	"homepage": "https://hapnees.github.io/",
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
