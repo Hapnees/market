@@ -3,17 +3,14 @@ import FormCheckout from '@/components/CheckoutPage/FormCheckout/FormCheckout'
 import Order from '@/components/CheckoutPage/Order/Order'
 import BackButton from '@/components/UI/BackButton/BackButton'
 import { useAppSelector } from '@/hooks/useAppSelector'
-import { IBreadCrumbsEl } from '@/types/breadcrumbs.interface'
 import { useNavigate } from 'react-router'
 import cl from './CheckoutPage.module.scss'
+import { getBreadCrumbsCheckoutPage } from './utils/CheckoutPage.util'
 
 const CheckoutPage = () => {
 	const navigate = useNavigate()
 	const { products } = useAppSelector(state => state.cart)
-	const breadCrumbsList: IBreadCrumbsEl[] = [
-		{ title: 'Корзина', href: '/cart' },
-		{ title: 'Оформление заказа', href: '/checkout' },
-	]
+	const breadCrumbsList = getBreadCrumbsCheckoutPage()
 
 	const onClickBackButton = () => navigate('/cart')
 

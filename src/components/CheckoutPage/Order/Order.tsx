@@ -1,10 +1,11 @@
+import pencilIcon from '@/assets/CheckoutPage/pencil.svg'
 import Button from '@/components/UI/Button/Button'
 import VolumeBlock from '@/components/VolumeBlock/VolumeBlock'
 import { IProductModif } from '@/types/product.interface'
+import getTotalPrice from '@/utils/getTotalPrice'
 import { FC } from 'react'
 import { useNavigate } from 'react-router'
 import cl from './Order.module.scss'
-import pencilIcon from '@/assets/CheckoutPage/pencil.svg'
 
 interface IProps {
 	products: IProductModif[]
@@ -13,9 +14,7 @@ interface IProps {
 const Order: FC<IProps> = ({ products }) => {
 	const navigate = useNavigate()
 
-	const totalPrice = products
-		.reduce((accum, item) => accum + item.price * item.quantity, 0)
-		.toFixed(2)
+	const totalPrice = getTotalPrice(products)
 
 	const onClickEditOrder = () => {
 		navigate('/cart')

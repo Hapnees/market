@@ -1,0 +1,38 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+
+	@media (max-width: 1380px) {
+		> .adaptiveComment {
+			order: 1;
+		}
+
+		> .blockList {
+			order: 2;
+		}
+	}
+}
+
+.blockList {
+	margin-bottom: 40px;
+}
+
+.block {
+	box-shadow: 0px 14px 39px -11px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+
+	margin-bottom: 20px;
+	padding: 15px 29px 15px 15px;
+}
+
+.subtitle {
+	color: $grayBlue;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 150%;
+	width: 245px;
+
+	> span {
+		font-weight: 600;
+	}
+}
