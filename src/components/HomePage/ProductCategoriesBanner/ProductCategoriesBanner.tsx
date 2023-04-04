@@ -1,9 +1,9 @@
+import arrowIcon from '@/assets/HomePage/arrow.svg'
+import bannerImage from '@/assets/ProductCategories/banner.png'
+import womanImage from '@/assets/ProductCategories/woman.png'
 import Button from '@/components/UI/Button/Button'
 import Switcher from '@/components/UI/Switcher/Switcher'
 import cl from './ProductCategoriesBanner.module.scss'
-import bannerImage from '@/assets/ProductCategories/banner.png'
-import womanImage from '@/assets/ProductCategories/woman.png'
-import arrowIcon from '@/assets/HomePage/arrow.svg'
 
 const ProductCategoriesBanner = () => {
 	return (

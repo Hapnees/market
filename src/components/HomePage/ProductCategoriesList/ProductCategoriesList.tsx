@@ -1,10 +1,10 @@
-import cl from './ProductCategoriesList.module.scss'
-import { DetailedHTMLProps, FC, HTMLAttributes, useEffect } from 'react'
 import { useGetTypesQuery } from '@/api/api'
-import { IType } from '@/types/filters.type.interface'
 import Loader from '@/components/Loader/Loader'
+import { IType } from '@/types/filters.type.interface'
+import { DetailedHTMLProps, FC, HTMLAttributes, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import cl from './ProductCategoriesList.module.scss'
 
 const ProductCategoriesList: FC<
 	DetailedHTMLProps<HTMLAttributes<HTMLUListElement>, HTMLUListElement>
