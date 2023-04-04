@@ -20,7 +20,6 @@
 	white-space: nowrap;
 
 	@include adaptive-size(gap, 100, 30, 750);
-	//gap: 100px;
 
 	margin-bottom: 25px;
 
@@ -33,7 +32,6 @@
 .title {
 	font-weight: 500;
 	@include adaptive-font(40, 20);
-	//font-size: 40px;
 	line-height: 120%;
 	text-transform: uppercase;
 
@@ -55,46 +53,7 @@
 	margin-bottom: 25px;
 }
 
-.sortListWrapper {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-
-	@media (max-width: 380px) {
-		flex-direction: column;
-	}
-}
-
-.sortListContainer {
-	display: flex;
-	gap: 5px;
-}
-
-.sortTitle {
-	font-weight: 500;
-	font-size: 16px;
-	line-height: 150%;
-}
-
-.sortWrapper {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-}
-
-.selector {
-	border: none;
-	background-color: #fefefe;
-
-	color: $grayBlue;
-	font-weight: 400;
-	font-size: 16px;
-	line-height: 150%;
-	cursor: pointer;
-}
-
 .typesList {
-	//display: flex;
 	display: grid;
 	grid-template-columns: repeat(12, minmax(90px, 111.45px));
 	column-gap: 11px;
@@ -138,11 +97,8 @@
 
 .content {
 	display: flex;
-	//justify-content: space-between;
-	//width: 100%;
 
 	@include adaptive-size(gap, 108, 0);
-	//gap: 108px;
 }
 
 .filterBlockWrapper {

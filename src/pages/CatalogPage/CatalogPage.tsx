@@ -1,27 +1,23 @@
 import FilterBlock from '@/FilterBlock/FilterBlock'
+import trashIcon from '@/assets/CatalogPage/trash.svg'
+import BreadCrumbs from '@/components/BreadCrumbs/BreadCrumbs'
 import PriceController from '@/components/CatalogPage/PriceController/PriceController'
+import FilterTypesMini from '@/components/FilterTypesMini/FilterTypesMini'
+import Loader from '@/components/Loader/Loader'
 import Pagination from '@/components/Pagination/Pagination'
 import ProductGrid from '@/components/ProductGrid/ProductGrid'
+import SortListMini from '@/components/SortListMini/SortListMini'
+import BackButton from '@/components/UI/BackButton/BackButton'
 import Button from '@/components/UI/Button/Button'
-import { IFilterListEl, IGetProductsParams } from '@/types/product.interface'
-import getFormattedFilterList from '@/formatters/filterList.formatter'
+import { IBreadCrumbsEl } from '@/types/breadcrumbs.interface'
+import { IGetProductsParams } from '@/types/product.interface'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import cl from './CatalogPage.module.scss'
-import {
-	useLazyGetBrendsQuery,
-	useLazyGetProducersQuery,
-	useLazyGetProductsQuery,
-	useLazyGetTypesQuery,
-} from '@/api/api'
-import trashIcon from '@/assets/CatalogPage/trash.svg'
-import BreadCrumbs from '@/components/BreadCrumbs/BreadCrumbs'
-import { IBreadCrumbsEl } from '@/types/breadcrumbs.interface'
-import FilterTypesMini from '@/components/FilterTypesMini/FilterTypesMini'
-import BackButton from '@/components/UI/BackButton/BackButton'
-import Loader from '@/components/Loader/Loader'
-import { IBrend, IProducer, IType } from '@/types/filters.type.interface'
-import { toast } from 'react-toastify'
+import useGetBrends from './hooks/useGetBrends'
+import useGetProducers from './hooks/useGetProducers'
+import useGetProducts from './hooks/useGetProducts'
+import useGetTypes from './hooks/useGetTypes'
 
 const limit = 15
 
@@ -32,18 +28,15 @@ const CatalogPage = () => {
 	const navigate = useNavigate()
 	const breadCrumbsList: IBreadCrumbsEl[] = [{ title: type, href: '/catalog' }]
 
-	const [getProducts, { data: productsData, isLoading: isLoadingProducts }] =
-		useLazyGetProductsQuery()
-	const [getProducers, { isLoading: isLoadingProducers }] =
-		useLazyGetProducersQuery()
-	const [getBrends, { isLoading: isLoadingBrends }] = useLazyGetBrendsQuery()
-	const [getTypes, { isLoading: isLoadingTypes }] = useLazyGetTypesQuery()
+	const { getProducts, productsData, isLoadingProducts, totalPages } =
+		useGetProducts()
 
-	const [producersList, setProducersList] = useState<
-		(IProducer & IFilterListEl)[]
-	>([])
-	const [brendsList, setBrendsList] = useState<(IBrend & IFilterListEl)[]>([])
-	const [typesList, setTypesList] = useState<(IType & IFilterListEl)[]>([])
+	const { getProducers, producersList, isLoadingProducers } =
+		useGetProducers(searchParams)
+
+	const { getBrends, brendsList, isLoadingBrends } = useGetBrends(searchParams)
+
+	const { getTypes, typesList, isLoadingTypes } = useGetTypes(searchParams)
 
 	const [order, setOrder] = useState<string | undefined>(undefined)
 	const [sort, setSort] = useState<string | undefined>(undefined)
@@ -72,8 +65,6 @@ const CatalogPage = () => {
 		+(searchParams.get('page') || 1)
 	)
 
-	const [totalPages, setTotalPages] = useState(0)
-
 	// При изменении минимальной цены
 	const onChangeMinPrice = (value: string) => {
 		searchParams.set('minPrice', value)
@@ -101,17 +92,11 @@ const CatalogPage = () => {
 		if (producersParam) params.producers = producersParam
 		if (typeParam) params.types = typeParam
 		if (+minPrice > 0) params.minPrice = +minPrice
-		if (+maxPrice > minPrice) params.maxPrice = +maxPrice
+		if (+maxPrice > +minPrice) params.maxPrice = +maxPrice
 		if (sortParam) params.sort = sortParam
 		if (orderParam) params.order = orderParam
 
 		getProducts(params)
-			.unwrap()
-			.then(res => {
-				// Получаем общее число продуктов
-				setTotalPages(Math.ceil(res.totalCount / limit))
-			})
-			.catch(() => toast.error('Ошибка при получении товаров'))
 	}
 
 	const onClickTypesListEl = (title: string) => {
@@ -146,31 +131,10 @@ const CatalogPage = () => {
 
 	useEffect(() => {
 		// Получаем производителей, бренды и типы ухода
+
 		getProducers()
-			.unwrap()
-			.then(data => {
-				const resultData = getFormattedFilterList(
-					searchParams,
-					data,
-					'producer'
-				)
-				setProducersList(resultData)
-			})
-			.catch(() => toast.error('Ошибка при получении производителей'))
 		getBrends()
-			.unwrap()
-			.then(data => {
-				const resultData = getFormattedFilterList(searchParams, data, 'brend')
-				setBrendsList(resultData)
-			})
-			.catch(() => toast.error('Ошибка при получении брендов'))
 		getTypes()
-			.unwrap()
-			.then(data => {
-				const resultData = getFormattedFilterList(searchParams, data, 'type')
-				setTypesList(resultData)
-			})
-			.catch(() => toast.error('Ошибка при получении типов ухода'))
 	}, [])
 
 	// Следим за фильтрами и пагинацией
@@ -210,54 +174,13 @@ const CatalogPage = () => {
 							{/*MINI*/}
 							<FilterTypesMini typesList={typesList.map(el => el.title)} />
 							{/*MINI*/}
-							<div className={cl.sortListWrapper}>
-								<p className={cl.sortTitle}>Сортировка:</p>
-								{/*SORT BLOCK*/}
-								<div className={cl.sortListContainer}>
-									<div className={cl.sortWrapper}>
-										<select
-											name='order'
-											id='order'
-											className={cl.selector}
-											value={order}
-											onClick={event =>
-												onChangeSelector(
-													event.currentTarget.name,
-													event.currentTarget.value
-												)
-											}
-											defaultValue={orderParam || undefined}
-										>
-											<option disabled defaultChecked>
-												Направление
-											</option>
-											<option value='asc'>По возрастанию</option>
-											<option value='desc'>По убыванию</option>
-										</select>
-									</div>
-									<div className={cl.sortNameWrapper}>
-										<select
-											name='sort'
-											id='sort'
-											className={cl.selector}
-											value={sort}
-											onChange={event =>
-												onChangeSelector(
-													event.currentTarget.name,
-													event.currentTarget.value
-												)
-											}
-											defaultValue={sortParam || undefined}
-										>
-											<option disabled defaultChecked>
-												Поле
-											</option>
-											<option value='title'>Название</option>
-											<option value='price'>Цена</option>
-										</select>
-									</div>
-								</div>
-							</div>
+							<SortListMini
+								sort={sort}
+								order={order}
+								orderParam={orderParam}
+								sortParam={sortParam}
+								onChangeSelector={onChangeSelector}
+							/>
 						</div>
 						{/*HEADER BOTTOM CONTENT*/}
 						<ul className={cl.typesList}>

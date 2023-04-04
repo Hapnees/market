@@ -1,0 +1,37 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+
+	@media (max-width: 380px) {
+		flex-direction: column;
+	}
+}
+
+.title {
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 150%;
+}
+
+.container {
+	display: flex;
+	gap: 5px;
+}
+
+.innerWrapper {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.selector {
+	border: none;
+	background-color: #fefefe;
+
+	color: $grayBlue;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 150%;
+	cursor: pointer;
+}
