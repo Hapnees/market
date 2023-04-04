@@ -1,6 +1,6 @@
+import { IProductInfo } from '@/types/list.interface'
 import { FC, HtmlHTMLAttributes } from 'react'
 import cl from './List.module.scss'
-import { IProductInfo } from '@/types/list.interface'
 
 interface IProps extends HtmlHTMLAttributes<HTMLUListElement> {
 	list: IProductInfo[]
