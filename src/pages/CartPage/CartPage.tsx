@@ -4,18 +4,15 @@ import CartGrid from '@/components/CartPage/CartGrid/CartGrid'
 import BackButton from '@/components/UI/BackButton/BackButton'
 import Button from '@/components/UI/Button/Button'
 import { useAppSelector } from '@/hooks/useAppSelector'
-import { IBreadCrumbsEl } from '@/types/breadcrumbs.interface'
 import getTotalPrice from '@/utils/getTotalPrice'
 import { useNavigate } from 'react-router'
 import cl from './CartPage.module.scss'
+import { getBreadCrumbsCartPage } from './util/CartPage.util'
 
 const CartPage = () => {
 	const navigate = useNavigate()
 	const { products } = useAppSelector(state => state.cart)
-	const breadCrumbsList: IBreadCrumbsEl[] = [
-		{ title: 'Корзина', href: '/cart' },
-	]
-
+	const breadCrumbsList = getBreadCrumbsCartPage()
 	const totalPrice = getTotalPrice(products)
 
 	const onClickBackBtn = () => navigate('/')

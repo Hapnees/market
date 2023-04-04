@@ -1,3 +1,4 @@
+import trashIcon from '@/assets/CatalogPage/trash.svg'
 import Button from '@/components/UI/Button/Button'
 import ButtonAdjustment from '@/components/UI/ButtonAdjustment/ButtonAdjustment'
 import VolumeBlock from '@/components/VolumeBlock/VolumeBlock'
@@ -5,7 +6,6 @@ import { useActions } from '@/hooks/useActions'
 import { IProductModif } from '@/types/product.interface'
 import { DetailedHTMLProps, FC, HTMLAttributes } from 'react'
 import cl from './CartGrid.module.scss'
-import trashIcon from '@/assets/CatalogPage/trash.svg'
 
 interface IProps
 	extends DetailedHTMLProps<
