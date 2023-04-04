@@ -1,7 +1,7 @@
 import { IProduct } from '@/types/product.interface'
 import { FC } from 'react'
-import ProductCardInfo from './ProductCardInfo/ProductCardInfo'
 import cl from './ProductCard.module.scss'
+import ProductCardInfo from './ProductCardInfo/ProductCardInfo'
 
 interface IProps {
 	product?: IProduct
