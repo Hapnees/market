@@ -5,6 +5,7 @@ import BackButton from '@/components/UI/BackButton/BackButton'
 import Button from '@/components/UI/Button/Button'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { IBreadCrumbsEl } from '@/types/breadcrumbs.interface'
+import getTotalPrice from '@/utils/getTotalPrice'
 import { useNavigate } from 'react-router'
 import cl from './CartPage.module.scss'
 
@@ -15,10 +16,7 @@ const CartPage = () => {
 		{ title: 'Корзина', href: '/cart' },
 	]
 
-	const totalPrice = products.reduce(
-		(accum, item) => accum + item.price * item.quantity,
-		0
-	)
+	const totalPrice = getTotalPrice(products)
 
 	const onClickBackBtn = () => navigate('/')
 
