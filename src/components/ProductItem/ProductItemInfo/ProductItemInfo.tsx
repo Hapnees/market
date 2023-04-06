@@ -40,10 +40,10 @@ const ProductItemInfo: FC<IProps> = ({ product }) => {
 
 			<div className={cl.bottomContent}>
 				<p className={cl.price}>{product.price} ₸</p>
-				<div className={cl.cartButton} onClick={onClickCart}>
+				<button className={cl.cartButton} onClick={onClickCart} role='button'>
 					<p>В корзину</p>
 					<img src={cartSvg} alt='' />
-				</div>
+				</button>
 			</div>
 		</div>
 	)

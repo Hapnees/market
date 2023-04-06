@@ -1,5 +1,5 @@
-import { IGetProductsParams, IProduct } from '@/types/product.interface'
 import { IBrend, IProducer, IType } from '@/types/filters.type.interface'
+import { IGetProductsParams, IProduct } from '@/types/product.interface'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const baseApi = createApi({

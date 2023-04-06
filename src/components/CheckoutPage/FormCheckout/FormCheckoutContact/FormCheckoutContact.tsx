@@ -3,6 +3,8 @@ import { FC } from 'react'
 import { IFormCheckoutComponents } from '../FormCheckout.interface'
 import outerCl from '../FormCheckout.module.scss'
 
+const phonePattern = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g
+
 const FormCheckoutContact: FC<IFormCheckoutComponents> = ({
 	register,
 	errors,
@@ -19,8 +21,10 @@ const FormCheckoutContact: FC<IFormCheckoutComponents> = ({
 					<Input
 						srcImg=''
 						placeholder='Введите ваше имя'
-						{...register('name', { required: 'Обязательное поле' })}
-						error={errors.name}
+						{...register('name', {
+							required: 'Обязательное поле',
+						})}
+						error={errors.name?.message}
 					/>
 				</div>
 				{/*PHONE*/}
@@ -29,8 +33,14 @@ const FormCheckoutContact: FC<IFormCheckoutComponents> = ({
 					<Input
 						srcImg=''
 						placeholder='Введите ваш телефон'
-						{...register('phone', { required: 'Обязательное поле' })}
-						error={errors.phone}
+						{...register('phone', {
+							required: 'Обязательное поле',
+							pattern: {
+								value: phonePattern,
+								message: 'Некорректный номер телефона',
+							},
+						})}
+						error={errors.phone?.message}
 					/>
 				</div>
 				{/*E-MAIL*/}
@@ -40,7 +50,7 @@ const FormCheckoutContact: FC<IFormCheckoutComponents> = ({
 						srcImg=''
 						placeholder='Введите ваш E-mail'
 						{...register('email', { required: 'Обязательное поле' })}
-						error={errors.email}
+						error={errors.email?.message}
 					/>
 				</div>
 				{/*ORG NAME*/}
@@ -50,7 +60,7 @@ const FormCheckoutContact: FC<IFormCheckoutComponents> = ({
 						srcImg=''
 						placeholder='Введите название организации'
 						{...register('orgName', { required: 'Обязательное поле' })}
-						error={errors.orgName}
+						error={errors.orgName?.message}
 					/>
 				</div>
 			</div>

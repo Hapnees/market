@@ -36,7 +36,7 @@ const CartPage = () => {
 					<AdaptiveCardGrid products={products} />
 					<div className={cl.buttonContent}>
 						<Button onClick={onClickCheckout}>Оформить заказ</Button>
-						<p className={cl.price}>{totalPrice.toFixed(2)} ₸</p>
+						<p className={cl.price}>{totalPrice} ₸</p>
 					</div>
 				</>
 			) : (

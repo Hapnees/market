@@ -1,3 +1,4 @@
+import searchIcon from '@/assets/Search/search.svg'
 import {
 	DetailedHTMLProps,
 	forwardRef,
@@ -6,7 +7,6 @@ import {
 } from 'react'
 import { FieldError } from 'react-hook-form'
 import cl from './Input.module.scss'
-import searchIcon from '@/assets/Search/search.svg'
 
 type IStringArgFunc = (value: string) => void
 type IEmptyArgFunc = () => void
@@ -20,7 +20,7 @@ interface IProps
 	> {
 	srcImg?: string
 	searchEvent?: IInputType
-	error?: FieldError
+	error?: string
 	isAbsolute?: boolean
 }
 
@@ -70,7 +70,7 @@ const Input = forwardRef<HTMLInputElement, IProps>(
 						className={cl.error}
 						style={{ position: isAbsolute ? 'absolute' : 'relative' }}
 					>
-						{error.message}
+						{error}
 					</p>
 				)}
 			</div>

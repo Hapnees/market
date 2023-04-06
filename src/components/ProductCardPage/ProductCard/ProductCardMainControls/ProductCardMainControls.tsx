@@ -1,4 +1,7 @@
 import { useDeleteProductByIdMutation } from '@/api/admin-product.api'
+import cartIcon from '@/assets/ProductCard/cart.svg'
+import shareIcon from '@/assets/ProductCard/share.svg'
+import trashIcon from '@/assets/trash.svg'
 import Button from '@/components/UI/Button/Button'
 import ButtonAdjustment from '@/components/UI/ButtonAdjustment/ButtonAdjustment'
 import { useActions } from '@/hooks/useActions'
@@ -7,9 +10,6 @@ import { IProduct } from '@/types/product.interface'
 import { FC, useState } from 'react'
 import { toast } from 'react-toastify'
 import cl from './ProductCardMainControls.module.scss'
-import cartIcon from '@/assets/ProductCard/cart.svg'
-import trashIcon from '@/assets/trash.svg'
-import shareIcon from '@/assets/ProductCard/share.svg'
 
 interface IProps {
 	product: IProduct

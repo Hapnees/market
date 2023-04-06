@@ -1,16 +1,12 @@
-import deliveryIcon from '@/assets/CheckoutPage/delivery.svg'
-import walletIcon from '@/assets/CheckoutPage/wallet.svg'
 import pencilIcon from '@/assets/pencil.svg'
 import CompletedOrder from '@/components/CompletedOrder/CompletedOrder'
 import ModalWindow from '@/components/ModalWindow/ModalWindow'
 import Button from '@/components/UI/Button/Button'
-import Input from '@/components/UI/Input/Input'
-import TextArea from '@/components/UI/TextArea/TextArea'
 import { useActions } from '@/hooks/useActions'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { ICheckout } from '@/types/product.interface'
 import getTotalPrice from '@/utils/getTotalPrice'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import cl from './FormCheckout.module.scss'
@@ -18,7 +14,11 @@ import FormCheckoutAddress from './FormCheckoutAddress/FormCheckoutAddress'
 import FormCheckoutContact from './FormCheckoutContact/FormCheckoutContact'
 import FormCheckoutSecondColumn from './FormCheckoutSecondColumn/FormCheckoutSecondColumn'
 
-const FormCheckout = () => {
+interface IProps {
+	anotherOnSubmit?: SubmitHandler<ICheckout>
+}
+
+const FormCheckout: FC<IProps> = ({ anotherOnSubmit }) => {
 	const { clearCart } = useActions()
 	const navigate = useNavigate()
 	const { products } = useAppSelector(state => state.cart)
@@ -45,16 +45,18 @@ const FormCheckout = () => {
 	}
 
 	return (
-		<form className={cl.form} onSubmit={handleSubmit(onSubmit)}>
+		<form
+			className={cl.form}
+			onSubmit={handleSubmit(anotherOnSubmit || onSubmit)}
+		>
 			{/*FIRST COLUMN*/}
 			<article>
 				<FormCheckoutContact register={register} errors={errors} />
 				<FormCheckoutAddress register={register} errors={errors} />
-				<Button className={cl.adaptiveOrderButton}>
-					Подтв ерждение заказа
-				</Button>
+				<Button className={cl.adaptiveOrderButton}>Подтверждение заказа</Button>
 			</article>
 
+			{/*SECOND COLUMN*/}
 			<FormCheckoutSecondColumn
 				register={register}
 				errorComment={errors.comment}

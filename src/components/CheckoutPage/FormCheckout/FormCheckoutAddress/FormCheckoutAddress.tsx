@@ -19,7 +19,7 @@ const FormCheckoutAddress: FC<IFormCheckoutComponents> = ({
 					srcImg=''
 					placeholder='Введите ваше город'
 					{...register('city', { required: 'Обязательное поле' })}
-					error={errors.city}
+					error={errors.city?.message}
 				/>
 			</div>
 			{/*ADDRESS*/}
@@ -29,7 +29,7 @@ const FormCheckoutAddress: FC<IFormCheckoutComponents> = ({
 					srcImg=''
 					placeholder='Введите адрес доставки'
 					{...register('address', { required: 'Обязательное поле' })}
-					error={errors.address}
+					error={errors.address?.message}
 				/>
 			</div>
 		</article>
